@@ -7,6 +7,24 @@ let notes = [];
 /*totalMoney es una variable que almacena todo el dinero que tengo en caja */
 let totalMoney = 0;
 
+/*	========	LOCAL STORAGE ========*/
+/*		GUARDAR:	*/
+function saveData(){
+	localStorage.setItem("caja_movements", JSON.stringify(movements));
+	localStorage.setItem("caja_notes", JSON.stringify(notes));
+	localStorage.setItem("caja_totalMoney", totalMoney);
+	localStorage.setItem("caja_turnInfo", document.getElementById("turnInfo").textContent);
+	}
+	
+/*		CARGAR:		*/
+function loadData(){
+	movements = JSON.parse(localStorage.getItem("caja_movements")) || [];
+	notes = JSON.parse(localStorage.getItem("caja_notes")) || [];
+	totalMoney = Number(localStorage.getItem("caja_totalMoney")) || 0;
+	document.getElementById("turnInfo").textContent = localStorage.getItem("caja_turnInfo") || "";
+	}
+
+
 /* FUNCTIONS */
 
 /* FUNCTION PAYMENT: */
@@ -18,10 +36,12 @@ function payment(cash, room="No hay habitación", info="") {
         cash,
         room,
         info,
-        date: fechaActual()
+        date: fechaActual(),
+        done: false
     });
     totalMoney += cash;
     console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+    saveData();
     uiShowMovements()
     uiMoney();
 }
@@ -35,9 +55,11 @@ function charge (cash, room="No hay habitación", info="") {
         cash,
         room,
         info,
-        date: fechaActual()
+        date: fechaActual(),
+        done: false
     });
     console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+    saveData();
     uiShowMovements()
     uiMoney();
 }
@@ -49,11 +71,13 @@ function both (cash, room, info="") {
         cash,
         room,
         info,
-        date: fechaActual()
+        date: fechaActual(),
+        done: false
     });
     totalMoney += cash;
     console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
     console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+    saveData();
     uiShowMovements()
     uiMoney();
 }
@@ -65,8 +89,10 @@ function addNote(text, room=0) {
     notes.push({
         text,
         room,
-        date: fechaActual()
+        date: fechaActual(),
+        done: false
     });
+    saveData();
     console.log("NOTA AGREGADA SATISFACTORIAMENTE: ", "En habitación: ", room);
     alert("NOTA AGREGADA SATISFACTORIAMENTE: ", room)
 }
@@ -162,11 +188,14 @@ function uiShowNotes() {
     ul.innerHTML = "";
 
     notes.forEach((n, i) => {
-        let li = document.createElement("li");
+        const li = document.createElement("li");
+
+        if (n.done) li.classList.add("done");
 
         const doneBtn = document.createElement("button");
         doneBtn.textContent = "✔";
-        doneBtn.onclick = () => toggleDone(li);
+        doneBtn.onclick = () =>
+            toggleDone(notes, i, uiShowNotes);
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "🗑";
@@ -181,6 +210,9 @@ function uiShowNotes() {
         ul.appendChild(li);
     });
 }
+
+
+
 
 /* HOUR FUNCTION: */
 function fechaActual() {
@@ -217,28 +249,6 @@ function toggleNotes() {
 
 /* ===== MOSTRAR MOVIMIENTOS ===== */
 
-function uiShowMovements(tipo) {
-    const ul = document.getElementById("movements");
-    ul.innerHTML = "";
-
-    let data = getMovements();
-
-    if (tipo !== "ALL") {
-        data = data.filter(m => m.tipo === tipo);
-    }
-
-    data.forEach(m => {
-        const li = document.createElement("li");
-
-        li.textContent =
-            `${m.tipo} | $${m.cash} | ${m.info} ${formatRoom(m.room)}`;
-
-        li.onclick = () => li.classList.toggle("done");
-
-        ul.appendChild(li);
-    });
-}
-
 let movementsVisible = false;
 
 function toggleMovements() {
@@ -255,7 +265,6 @@ function toggleMovements() {
         movementsVisible = false;
     }
 }
-
 function uiShowMovements() {
     const ul = document.getElementById("movements");
     ul.innerHTML = "";
@@ -263,9 +272,12 @@ function uiShowMovements() {
     movements.forEach((m, i) => {
         const li = document.createElement("li");
 
+        if (m.done) li.classList.add("done");
+
         const doneBtn = document.createElement("button");
         doneBtn.textContent = "✔";
-        doneBtn.onclick = () => toggleDone(li);
+        doneBtn.onclick = () =>
+            toggleDone(movements, i, uiShowMovements);
 
         const delBtn = document.createElement("button");
         delBtn.textContent = "🗑";
@@ -283,22 +295,24 @@ function uiShowMovements() {
 
 
 /* NUEVA FUNCIÓN */
-function toggleDone(li) {
-    li.classList.toggle("done");
+function toggleDone(array, index, refresh) {
+    array[index].done = ! array[index].done;
+    saveData();
+	refresh();
 }
 
 function deleteItem(array, index, refreshFunction) {
     if (confirm("¿ELIMINAR ELEMENTO?")) {
         array.splice(index, 1);
+        saveData();
         refreshFunction();
     }
-    uiShowMovements();
-    uiShowNotes();
 }
 
 function uiRestartMoney() {
     if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER LA CAJA A 0?")) {
         totalMoney = 0
+        saveData();
     }
     uiMoney()
 }
@@ -308,3 +322,27 @@ function formatRoom(room) {
     return ` | Hab ${room} `;
 }
 
+/*NUEVO TURNO: */
+function newTurn(){
+	if(confirm("¿INICIAR NUEVO TURNO? - SE BORRARÁN TODOS LOS DATOS. ¿DESEA CONTINUAR?")) {
+		movements = [];
+		notes = [];
+		totalMoney = 0;
+		
+		const now = fechaActual();
+		
+		document.getElementById("turnInfo").textContent = "Turno iniciado: " + now;
+		
+		saveData();
+		uiShowMovements();
+		uiShowNotes();
+		uiMoney();
+		}
+	}
+
+
+
+loadData();
+uiShowMovements();
+uiShowNotes();
+uiMoney();

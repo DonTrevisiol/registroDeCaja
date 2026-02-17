@@ -11,6 +11,8 @@
             <!-- INICIO DEL BODY -->
             <h1>REGISTRO DE CARGOS Y ANTICIPOS</h1>
             <h2>CONTROL DE CAJA</h2>
+            <button onclick="newTurn()">NUEVO TURNO</button>
+            <p id="turnInfo"></p>
 
             <!-- MOVIMIENTOS DE CAJA PARA REGISTRO -->
             <div class="section">
@@ -21,8 +23,7 @@
                 Habitación:
                 <input id="room" type="number">
 
-                Info:
-                <input id="info">
+                <input id="info" placeholder="info: ">
                 <button onclick="uiPayment()">ANTICIPO</button>
                 <button onclick="uiCharge()">CARGO</button>
                 <button onclick="uiBoth()">AMBOS</button>
@@ -47,17 +48,10 @@
                 <button id="toggleNotesBtn" onclick="toggleNotes()">MOSTRAR</button>
                 <ul id="notes"></ul>
             </div>
-
-            <!-- TOTAL DE CAJA -->
-            <div class="section">
-                <h3>TOTAL DE CAJA:</h3>
-                <button onclick="uiMoney()">ACTUALIZAR</button>
-                <p id="money">0</p>
-                <button id="deleteMoney" onclick="uiRestartMoney()">REINICIAR CAJA</button>
-            </div>
+            
             <!-- LISTA DE MOVIMIENTOS DE CAJA -->
              <div class="section">
-                <h3>MOVIMIENTOS:</h3>
+                <h3>MOVIMIENTOS PENDIENTES:</h3>
                 <button id="toggleMovementsBtn" onclick="toggleMovements()">
                     MOSTRAR
                 </button>
@@ -66,6 +60,14 @@
 
                 <br><br>
              </div>
+             
+             <!-- TOTAL DE CAJA -->
+            <div class="section">
+                <h3>TOTAL DE CAJA:</h3>
+                <button onclick="uiMoney()">ACTUALIZAR</button>
+                <p id="money">0</p>
+                <button id="deleteMoney" onclick="uiRestartMoney()">REINICIAR CAJA</button>
+            </div>
 
             <script src="caja.js"></script>
 

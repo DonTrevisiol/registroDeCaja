@@ -23,6 +23,7 @@ h3 {
 ul {
     max-height: 200px;
     overflow: auto;
+    text-align: left;
 }
 
 .done {
@@ -43,5 +44,10 @@ input[type="number"] {
 
 #deleteMoney:hover {
     background-color: red;
+    color: white;
+}
+
+#newTurn:hover {
+	background-color: blue;
     color: white;
 }

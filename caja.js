@@ -29,72 +29,99 @@ function loadData(){
 
 /* FUNCTION PAYMENT: */
 // ESTA FUNCIÓN SIRVE PARA REGISTRAR TODO EL DINERO DEJÓ EL HUESPÉD EN CAJA:
-function payment(cash, room="No hay habitación", info="") {
-    cash = Number(cash);
-    movements.push({
-        tipo: "ANTICIPO",        
-        cash,
-        room,
-        info,
-        date: fechaActual(),
-        done: false
-    });
-    totalMoney += cash;
-    console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
-    saveData();
-    uiShowMovements()
-    uiMoney();
+function payment(cash, room=0, info="") {
+	if(!cash) {
+		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
+		} else {
+			cash = Number(cash);
+				movements.push({
+					tipo: "ANTICIPO",        
+					cash,
+					room,
+					info,
+					date: horaActual(),
+					done: false
+				});
+					totalMoney += cash;
+					console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+					alert("ANTICIPO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
+					document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
+					saveData();
+					uiShowMovements()
+					uiMoney();
+		}
+    
 }
 /* FUNCTION CARGE: */
 // ESTA FUNBCIÓN RECARGA EL DINERO QUE EL HUESPED DEBE EN LA HABITACIÓN: 
-function charge (cash, room="No hay habitación", info="") {
-    cash = Number(cash);
+function charge (cash, room=0, info="") {
+	if (!cash) {
+		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
+		} else {
+			cash = Number(cash);
 
-    movements.push({
-        tipo: "CARGO",
-        cash,
-        room,
-        info,
-        date: fechaActual(),
-        done: false
-    });
-    console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
-    saveData();
-    uiShowMovements()
-    uiMoney();
+			movements.push({
+			tipo: "CARGO",
+			cash,
+			room,
+			info,
+			date: horaActual(),
+			done: false
+			});
+				console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+				alert("CARGO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
+				document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
+				saveData();
+				uiShowMovements()
+				uiMoney();
+			
+		}
+    
 }
 
-function both (cash, room, info="") {
-    cash = Number(cash);
-    movements.push({
-        tipo: "AMBOS",
-        cash,
-        room,
-        info,
-        date: fechaActual(),
-        done: false
-    });
-    totalMoney += cash;
-    console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
-    console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
-    saveData();
-    uiShowMovements()
-    uiMoney();
+function both (cash, room=0, info="") {
+	if (!cash) {
+		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
+		} else {
+			cash = Number(cash);
+			movements.push({
+			tipo: "AMBOS",
+			cash,
+			room,
+			info,
+			date: horaActual(),
+			done: false
+			});
+				totalMoney += cash;
+				console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+				console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+				alert("CARGO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
+				document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
+				saveData();
+				uiShowMovements()
+				uiMoney();
+		}
+    
 }
 
 /*FUNCTION NOTES: */
 // FUNCION PARA CREAR NOTAS:
 
 function addNote(text, room=0) {
-    notes.push({
-        text,
-        room,
-        date: fechaActual(),
-        done: false
-    });
-    saveData();
-    console.log("NOTA AGREGADA SATISFACTORIAMENTE: ", "En habitación: ", room);
-    alert("NOTA AGREGADA SATISFACTORIAMENTE: ", room)
+	if(!text) {
+		alert("EL TEXTO NO PUEDE ESTAR VACÍO")
+		} else {
+			notes.push({
+			text,
+			room,
+			date: horaActual(),
+			done: false
+				});
+			console.log("NOTA AGREGADA SATISFACTORIAMENTE: ", "En habitación: ", room);
+			alert("NOTA AGREGADA SATISFACTORIAMENTE: ", room)
+			document.getElementById("toggleNotesBtn").textContent = "OCULTAR";
+			}
+			saveData();
 }
 
 /* FUNCTION GET: */
@@ -125,13 +152,11 @@ function uiPayment() {
         document.getElementById("room").value,
         document.getElementById("info").value
     );
-        alert("ANTICIPO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("info").value = "";
         uiShowMovements()
         movementsVisible = true;
-        document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
 }
 
 function uiCharge() {
@@ -141,13 +166,11 @@ function uiCharge() {
         document.getElementById("room").value,
         document.getElementById("info").value
     );
-        alert("CARGO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("info").value = "";
         uiShowMovements()
-        movementsVisible = true;
-        document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
+        movementsVisible = true;        
 }
 function uiBoth() {
     /*function both (cash, room, info="") */
@@ -156,14 +179,11 @@ function uiBoth() {
         document.getElementById("room").value,
         document.getElementById("info").value
     );
-        alert("CARGO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("info").value = "";
         uiShowMovements()
-        movementsVisible = true;
-        document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
-        
+        movementsVisible = true;        
 }
 
 function uiAddNote() {
@@ -176,7 +196,6 @@ function uiAddNote() {
         document.getElementById("noteRoom").value = "";
         uiShowNotes();
         notesVisible = true;
-        document.getElementById("toggleNotesBtn").textContent = "OCULTAR";
 }
 
 function uiMoney() {
@@ -221,11 +240,16 @@ function fechaActual() {
     const mes = String(d.getMonth() + 1).padStart(2, "0");
     const anio = d.getFullYear();
 
-    const hora = String(d.getHours()).padStart(2, "0");
-    const min = String(d.getMinutes()).padStart(2, "0");
-
-    return `${dia}/${mes}/${anio} ${hora}:${min} -->` ;
+    return `${dia}/${mes}/${anio}` ;
 }
+
+function horaActual() {
+	const d = new Date();
+	const hora = String(d.getHours()).padStart(2, "0");
+    const min = String(d.getMinutes()).padStart(2, "0");
+    
+    return `${hora}:${min}` ;
+	}
 
 let notesVisible = false;
 
@@ -286,7 +310,7 @@ function uiShowMovements() {
 
         const text = document.createElement("span");
         text.textContent =
-            ` ${m.date} | ${m.tipo} | $${m.cash} | ${m.info} ${formatRoom(m.room)}`;
+            `${m.date} | ${m.tipo} | $${m.cash} | ${formatRoom(m.room)} ${m.info}`;
 
         li.append(doneBtn, delBtn, text);
         ul.appendChild(li);
@@ -310,16 +334,21 @@ function deleteItem(array, index, refreshFunction) {
 }
 
 function uiRestartMoney() {
-    if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER LA CAJA A 0?")) {
-        totalMoney = 0
-        saveData();
+    if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER LA CAJA A 0? SE ELIMINARÁN LOS DATOS DEL TURNO TAMBIÉN")) {
+        document.getElementById("turnInfo").textContent = "";
     }
+	totalMoney = 0;
+    movements = [];
+	notes = [];
+    uiShowMovements();
+	uiShowNotes();
     uiMoney()
+    saveData();
 }
 
 function formatRoom(room) {
     if(!room || room === "0") return "";
-    return ` | Hab ${room} `;
+    return `Habitación: ${room} | `;
 }
 
 /*NUEVO TURNO: */
@@ -329,9 +358,10 @@ function newTurn(){
 		notes = [];
 		totalMoney = 0;
 		
-		const now = fechaActual();
+		const date = fechaActual();
+		const hour = horaActual();
 		
-		document.getElementById("turnInfo").textContent = "Turno iniciado: " + now;
+		document.getElementById("turnInfo").textContent = "Turno iniciado: " + date + ' ' + hour;
 		
 		saveData();
 		uiShowMovements();

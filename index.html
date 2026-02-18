@@ -11,22 +11,25 @@
             <!-- INICIO DEL BODY -->
             <h1>REGISTRO DE CARGOS Y ANTICIPOS</h1>
             <h2>CONTROL DE CAJA</h2>
-            <button onclick="newTurn()">NUEVO TURNO</button>
-            <p id="turnInfo"></p>
+            <button id="newTurn" onclick="newTurn()">NUEVO TURNO</button>
+            <h3 id="turnInfo"></h3>
 
             <!-- MOVIMIENTOS DE CAJA PARA REGISTRO -->
             <div class="section">
                 <h3>REGISTRAR MOVIMIENTOS:</h3>
-                Monto:
-                <input id="cash" type="number">
-
-                Habitación:
-                <input id="room" type="number">
-
-                <input id="info" placeholder="info: ">
-                <button onclick="uiPayment()">ANTICIPO</button>
-                <button onclick="uiCharge()">CARGO</button>
-                <button onclick="uiBoth()">AMBOS</button>
+                <div>
+					Monto:
+					<input id="cash" type="number" placeholder="$$$ ">
+					Habitación:
+					<input id="room" type="number" placeholder="###">
+					<br>
+					Info: 
+					<input id="info" placeholder="Info: ">
+					<br>
+					<button onclick="uiPayment()">ANTICIPO</button>
+					<button onclick="uiCharge()">CARGO</button>
+					<button onclick="uiBoth()">AMBOS</button>
+                </div>
                 <br>
             </div>
             <!-- NOTAS PARA REGISTRO -->
@@ -34,10 +37,10 @@
                 <h3>AGREGAR NOTAS:</h3>
                 
                 Texto:
-                <input id="noteText" name="note" required>
+                <input id="noteText" name="note" placeholder="Escribe una nota..." required>
                 
                 Habitación:
-                <input id="noteRoom" type="number">
+                <input id="noteRoom" type="number" placeholder="###">
 
                 <button onclick="uiAddNote()">AGREGAR NOTA</button>
             </div>
@@ -65,7 +68,7 @@
             <div class="section">
                 <h3>TOTAL DE CAJA:</h3>
                 <button onclick="uiMoney()">ACTUALIZAR</button>
-                <p id="money">0</p>
+                <h1 id="money">0</h1>
                 <button id="deleteMoney" onclick="uiRestartMoney()">REINICIAR CAJA</button>
             </div>
 

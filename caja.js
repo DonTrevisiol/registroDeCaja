@@ -223,7 +223,7 @@ function uiShowNotes() {
 
         const text = document.createElement("span");
         text.textContent =
-            ` ${n.date} | ${n.text} ${formatRoom(n.room)}`;
+            ` ${n.date} | ${n.text} | ${formatRoom(n.room)} `;
 
         li.append(doneBtn, delBtn, text);
         ul.appendChild(li);
@@ -310,7 +310,7 @@ function uiShowMovements() {
 
         const text = document.createElement("span");
         text.textContent =
-            `${m.date} | ${m.tipo} | $${m.cash} | ${formatRoom(m.room)} ${m.info}`;
+            `${m.date} | ${m.tipo} | $${m.cash} | ${formatRoom(m.room)} | ${m.info}`;
 
         li.append(doneBtn, delBtn, text);
         ul.appendChild(li);
@@ -348,7 +348,7 @@ function uiRestartMoney() {
 
 function formatRoom(room) {
     if(!room || room === "0") return "";
-    return ` | Habitación: ${room} `;
+    return `Habitación: ${room}`;
 }
 
 /*NUEVO TURNO: */

@@ -348,7 +348,7 @@ function uiRestartMoney() {
 
 function formatRoom(room) {
     if(!room || room === "0") return "";
-    return `Habitación: ${room} | `;
+    return ` | Habitación: ${room} `;
 }
 
 /*NUEVO TURNO: */

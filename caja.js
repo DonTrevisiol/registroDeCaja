@@ -220,17 +220,35 @@ function uiShowNotes() {
         delBtn.textContent = "🗑";
         delBtn.onclick = () =>
             deleteItem(notes, i, uiShowNotes);
+        
+        const editBtn = document.createElement("button");
+		editBtn.textContent = "✏";
+		editBtn.onclick = () => editNote(i);
+
+
 
         const text = document.createElement("span");
         text.textContent =
             ` ${n.date} | ${n.text} | ${formatRoom(n.room)} `;
 
-        li.append(doneBtn, delBtn, text);
+        li.append(doneBtn, delBtn, editBtn, text);
         ul.appendChild(li);
     });
 }
 
+//  EDITAR NOTA:
+function editNote(index) {
+    const newText = prompt("Editar texto:", notes[index].text);
+    if (newText === null) return;
 
+    const newRoom = prompt("Editar habitación:", notes[index].room);
+
+    notes[index].text = newText;
+    notes[index].room = newRoom;
+
+    saveData();
+    uiShowNotes();
+}
 
 
 /* HOUR FUNCTION: */
@@ -307,16 +325,45 @@ function uiShowMovements() {
         delBtn.textContent = "🗑";
         delBtn.onclick = () =>
             deleteItem(movements, i, uiShowMovements);
+            
+        const editBtn = document.createElement("button");
+		editBtn.textContent = "✏";
+		editBtn.onclick = () => editMovement(i);
 
         const text = document.createElement("span");
         text.textContent =
             `${m.date} | ${m.tipo} | $${m.cash} | ${formatRoom(m.room)} | ${m.info}`;
 
-        li.append(doneBtn, delBtn, text);
+        li.append(doneBtn, delBtn, editBtn, text);
         ul.appendChild(li);
     });
 }
 
+
+//	EDITAR MOVIMIENTO
+function editMovement(index) {
+    const m = movements[index];
+
+    const newCash = prompt("Editar monto:", m.cash);
+    if (newCash === null) return;
+
+    const newInfo = prompt("Editar info:", m.info);
+    if (newInfo === null) return;
+
+    const newRoom = prompt("Editar habitación:", m.room);
+
+    /* Ajustar totalMoney si cambia el monto */
+    totalMoney -= Number(m.cash);
+    totalMoney += Number(newCash);
+
+    m.cash = Number(newCash);
+    m.info = newInfo;
+    m.room = newRoom;
+
+    saveData();
+    uiShowMovements();
+    uiMoney();
+}
 
 /* NUEVA FUNCIÓN */
 function toggleDone(array, index, refresh) {

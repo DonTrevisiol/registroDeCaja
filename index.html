@@ -3,6 +3,7 @@
     <html>
         <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>REGISTRO CAJA</title>
             <link rel="stylesheet" href="style.css">
         </head>
@@ -29,9 +30,9 @@
 					<br>
 					<h3>Formas de pago: </h3>
 					<select id="paymentMethod">
-						<option value="EFECTIVO">EFECTIVO</option>
-						<option value="TARJETA">TARJETA</option>
-						<option value="QR">CÓDIGO QR</option>
+						<option value="EFECTIVO">💵 EFECTIVO 💵</option>
+						<option value="TARJETA">💳 TARJETA 💳</option>
+						<option value="QR">📲 CÓDIGO QR 📲</option>
 					</select>				
 					<br>
 					<div class="section">
@@ -59,6 +60,8 @@
             <div class="section">
                 <h3>LISTA DE NOTAS:</h3>
                 <button id="toggleNotesBtn" onclick="toggleNotes()">MOSTRAR</button>
+                <button onclick="copyNotes()">📋 COPIAR</button>
+                <button id="deleteAllNotes" onclick="deleteAllNotes()">🗑 ¿¡ELIMINAR TODAS!? 🗑</button>
                 <ul id="notes"></ul>
             </div>
             <br>
@@ -70,10 +73,8 @@
             <!-- LISTA DE MOVIMIENTOS DE CAJA -->
              <div class="section">
                 <h3>MOVIMIENTOS PENDIENTES:</h3>
-                <button id="toggleMovementsBtn" onclick="toggleMovements()">
-                    MOSTRAR
-                </button>
-
+                <button id="toggleMovementsBtn" onclick="toggleMovements()">MOSTRAR</button>
+                <button onclick="copyMovements()">📋 COPIAR</button>
                 <ul id="movements"></ul>
 
                 <br><br>
@@ -82,15 +83,15 @@
              <div class="box-section">
 				 <h2>CAJAS:</h2>
 				 <div class="box-section">
-					 EFECTIVO:
+					 <h1> 💵: </h1>
 					 <h1 id="cashTotal">0</h1>
 				 </div>
 				 <div class="box-section">
-					 TARJETAS:
+					 <h1> 💳: </h1>
 					 <h1 id="cardTotal">0</h1>
 				 </div>
 				 <div class="box-section">
-					 CÓDIGOS QR:
+					 <h1> 📲: </h1>
 					 <h1 id="qrTotal">0</h1>
 				 </div>
              </div>

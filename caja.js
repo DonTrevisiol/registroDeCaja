@@ -146,6 +146,61 @@ function addNote(text, room=0) {
 			saveData();
 }
 
+function copyNotes() {
+    if(notes.length === 0) {
+        alert("NO HAY NOTAS PARA COPIAR");
+        return;
+    }
+
+    let textToCopy = "📝 BITÁCORA ESPECIAL:\n\n";
+
+    notes.forEach(n => {
+        let line = `${n.date} | ${n.text} ${formatRoom(n.room)}`;
+
+        if(n.done) {
+            line = `~${line}~`;
+        }
+
+        textToCopy += line + "\n";
+    });
+
+    navigator.clipboard.writeText(textToCopy);
+
+    alert("NOTAS COPIADAS AL PORTAPAPELES");
+}
+
+function copyMovements() {
+    if(movements.length === 0) {
+        alert("NO HAY MOVIMIENTOS PARA COPIAR");
+        return;
+    }
+
+    let textToCopy = "💰 MOVIMIENTOS DE CAJA:\n\n";
+
+    movements.forEach(m => {
+
+        let methodText =
+            (m.tipo === "ANTICIPO" || m.tipo === "AMBOS")
+                ? ` | ${m.method}`
+                : "";
+
+        let line =
+            `${m.date} | ${m.tipo} | BS: ${m.cash}${methodText} | ${formatRoom(m.room)} | ${m.info}`;
+
+        if(m.done) {
+            line = `~${line}~`;
+        }
+
+        textToCopy += line + "\n";
+    });
+
+    textToCopy += `\n*EFECTIVO:* ${totalCash}BS *TARJETA:* ${totalCard}BS\n *QR:* ${totalQR}BS \n*INGRESOS TOTALES:* ${totalMoney}BS`;
+
+    navigator.clipboard.writeText(textToCopy);
+
+    alert("MOVIMIENTOS COPIADOS AL PORTAPAPELES");
+}
+
 /* FUNCTION GET: */
 // FUNCIÓN PARA SOLICITAR EL ESTADO
 function getMoney() {
@@ -420,7 +475,7 @@ function deleteItem(array, index, refreshFunction) {
 }
 
 function uiRestartMoney() {
-    if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER LA CAJA A 0? SE ELIMINARÁN LOS DATOS DEL TURNO TAMBIÉN")) {
+    if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER TODAS LAS CAJAS A 0? LOS MOVIMIENTOS PENDIENTES TAMBIÉN SE PERDERÁN")) {
         document.getElementById("turnInfo").textContent = "";
     }
     totalCash = 0;
@@ -428,11 +483,12 @@ function uiRestartMoney() {
     totalQR = 0;
 	totalMoney = 0;
     movements = [];
-	notes = [];
+    
     uiShowMovements();
 	uiShowNotes();
     uiMoney()
     saveData();
+    alert("CAJA REINICIADA");
 }
 
 function formatRoom(room) {
@@ -477,6 +533,18 @@ function newTurn(){
 		saveData();
 		}
 	}
+function deleteAllNotes(){
+	if(notes.length === 0){
+		alert("NO HAY NOTAS PARA ELIMINAR");
+			return;
+	}
+	if(!confirm("¡¿Eliminar TODAS las notas?!")) return;
+	
+	notes = [];
+	uiShowNotes();
+	saveData();
+	alert("TODAS LAS NOTAS FUERON ELIMINADAS SATISFACTORIAMENTE");
+}
 
 /*	===	DARK MODE ===	*/
 

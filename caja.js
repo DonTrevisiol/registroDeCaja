@@ -4,6 +4,12 @@
 let movements = [];
 /*notes es un arreglo que sirve para informar noticias que no tengan que ver con los mivimientos de caja */
 let notes = [];
+/*totalCash es una variable que almacena la cantidad de efectivo con el que me pagaron*/
+let totalCash = 0;
+/*totalCard es la cantidad de dinero que tengo cargado en las tarjetas de crédito*/
+let totalCard = 0;
+/*totalQR es una variable que almacena la cantidad de dinero realizados de pagos por código QR*/
+let totalQR = 0;
 /*totalMoney es una variable que almacena todo el dinero que tengo en caja */
 let totalMoney = 0;
 
@@ -12,6 +18,9 @@ let totalMoney = 0;
 function saveData(){
 	localStorage.setItem("caja_movements", JSON.stringify(movements));
 	localStorage.setItem("caja_notes", JSON.stringify(notes));
+	localStorage.setItem("caja_totalCash", totalCash);
+	localStorage.setItem("caja_totalCard", totalCard);
+	localStorage.setItem("caja_totalQR", totalQR);
 	localStorage.setItem("caja_totalMoney", totalMoney);
 	localStorage.setItem("caja_turnInfo", document.getElementById("turnInfo").textContent);
 	}
@@ -20,6 +29,9 @@ function saveData(){
 function loadData(){
 	movements = JSON.parse(localStorage.getItem("caja_movements")) || [];
 	notes = JSON.parse(localStorage.getItem("caja_notes")) || [];
+	totalCash = Number(localStorage.getItem("caja_totalCash")) || 0;
+	totalCard = Number(localStorage.getItem("caja_totalCard")) || 0;
+	totalQR = Number(localStorage.getItem("caja_totalQR")) || 0;
 	totalMoney = Number(localStorage.getItem("caja_totalMoney")) || 0;
 	document.getElementById("turnInfo").textContent = localStorage.getItem("caja_turnInfo") || "";
 	}
@@ -29,7 +41,7 @@ function loadData(){
 
 /* FUNCTION PAYMENT: */
 // ESTA FUNCIÓN SIRVE PARA REGISTRAR TODO EL DINERO DEJÓ EL HUESPÉD EN CAJA:
-function payment(cash, room=0, info="") {
+function payment(cash, room=0, info="", method) {
 	if(!cash) {
 		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
 		} else {
@@ -39,22 +51,29 @@ function payment(cash, room=0, info="") {
 					cash,
 					room,
 					info,
+					method,
 					date: horaActual(),
 					done: false
 				});
-					totalMoney += cash;
-					console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
+				/*	SUMAR SEGÚN MÉTODO:	*/
+					if (method === "EFECTIVO") totalCash += cash;
+					if (method === "TARJETA") totalCard += cash;
+					if (method === "QR") totalQR += cash;
+					totalMoney = totalCash + totalCard + totalQR;
+					
 					alert("ANTICIPO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
 					document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
-					saveData();
+					
 					uiShowMovements()
+					recalculateTotals();
 					uiMoney();
+					saveData();
 		}
     
 }
 /* FUNCTION CARGE: */
 // ESTA FUNBCIÓN RECARGA EL DINERO QUE EL HUESPED DEBE EN LA HABITACIÓN: 
-function charge (cash, room=0, info="") {
+function charge (cash, room=0, info="", method=null) {
 	if (!cash) {
 		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
 		} else {
@@ -65,21 +84,23 @@ function charge (cash, room=0, info="") {
 			cash,
 			room,
 			info,
+			method: null,
 			date: horaActual(),
 			done: false
 			});
 				console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
 				alert("CARGO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
 				document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
-				saveData();
 				uiShowMovements()
+				
+				recalculateTotals();
 				uiMoney();
-			
+				saveData();
 		}
     
 }
 
-function both (cash, room=0, info="") {
+function both (cash, room=0, info="", method) {
 	if (!cash) {
 		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
 		} else {
@@ -89,17 +110,18 @@ function both (cash, room=0, info="") {
 			cash,
 			room,
 			info,
+			method,
 			date: horaActual(),
 			done: false
 			});
-				totalMoney += cash;
 				console.log("ANTICIPO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
 				console.log("CARGO REGISTRADO: ", "HAB.: ", room,"Dinero: $ ", cash, info);
 				alert("CARGO REGISTRADO CON ÉXITO: ", "HAB.: ", room,"Dinero: $ ", cash, info )
 				document.getElementById("toggleMovementsBtn").textContent = "OCULTAR";
-				saveData();
 				uiShowMovements()
+				recalculateTotals();
 				uiMoney();
+				saveData();
 		}
     
 }
@@ -127,7 +149,6 @@ function addNote(text, room=0) {
 /* FUNCTION GET: */
 // FUNCIÓN PARA SOLICITAR EL ESTADO
 function getMoney() {
-    console.log("Total de caja: ", totalMoney);
     return totalMoney;
 }
 
@@ -150,7 +171,8 @@ function uiPayment() {
     payment(
         document.getElementById("cash").value,
         document.getElementById("room").value,
-        document.getElementById("info").value
+        document.getElementById("info").value,
+        document.getElementById("paymentMethod").value
     );
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
@@ -177,7 +199,8 @@ function uiBoth() {
     both(
         document.getElementById("cash").value,
         document.getElementById("room").value,
-        document.getElementById("info").value
+        document.getElementById("info").value,
+        document.getElementById("paymentMethod").value
     );
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
@@ -199,7 +222,11 @@ function uiAddNote() {
 }
 
 function uiMoney() {
-    document.getElementById("money").textContent = getMoney();
+	document.getElementById("cashTotal").textContent = totalCash;
+	document.getElementById("cardTotal").textContent = totalCard;
+	document.getElementById("qrTotal").textContent = totalQR;
+	
+    document.getElementById("moneyTotal").textContent = getMoney();
 }
 
 function uiShowNotes() {
@@ -331,9 +358,8 @@ function uiShowMovements() {
 		editBtn.onclick = () => editMovement(i);
 
         const text = document.createElement("span");
-        text.textContent =
-            `${m.date} | ${m.tipo} | $${m.cash} | ${formatRoom(m.room)} | ${m.info}`;
-
+        const methodText = (m.tipo === "ANTICIPO" || m.tipo === "AMBOS") ? ` | ${m.method}` : "";
+		text.textContent = `${m.date} | ${m.tipo} | $${m.cash} ${methodText} | ${formatRoom(m.room)} | ${m.info}`;
         li.append(doneBtn, delBtn, editBtn, text);
         ul.appendChild(li);
     });
@@ -351,18 +377,31 @@ function editMovement(index) {
     if (newInfo === null) return;
 
     const newRoom = prompt("Editar habitación:", m.room);
-
-    /* Ajustar totalMoney si cambia el monto */
-    totalMoney -= Number(m.cash);
-    totalMoney += Number(newCash);
-
+    
+    const newMethod = prompt("Forma de pago (EFECTIVO / TARJETA / QR): ", m.method);
+    
+    /*	RESTAR VALOR ANTERIOR:	*/
+    if (m.method === "EFECTIVO") totalCash -= Number(m.cash);
+    if (m.method === "TARJETA") totalCard -= Number(m.cash);
+    if (m.method === "QR") totalQR -= Number(m.cash);
+    
+    /*	SUMAR NUEVO VALOR:	*/
+    
+    if (newMethod === "EFECTIVO") totalCash += Number(newCash);
+    if (newMethod === "TARJETA") totalCard += Number(newCash);
+    if (newMethod === "QR") totalQR += Number(newCash);
+    
     m.cash = Number(newCash);
     m.info = newInfo;
     m.room = newRoom;
-
-    saveData();
+    m.method = newMethod;
+    
+    totalMoney = totalCash + totalCard + totalQR; 
+    
     uiShowMovements();
-    uiMoney();
+    recalculateTotals();
+	uiMoney();
+	saveData();
 }
 
 /* NUEVA FUNCIÓN */
@@ -384,6 +423,9 @@ function uiRestartMoney() {
     if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER LA CAJA A 0? SE ELIMINARÁN LOS DATOS DEL TURNO TAMBIÉN")) {
         document.getElementById("turnInfo").textContent = "";
     }
+    totalCash = 0;
+    totalCard = 0;
+    totalQR = 0;
 	totalMoney = 0;
     movements = [];
 	notes = [];
@@ -397,12 +439,29 @@ function formatRoom(room) {
     if(!room || room === "0") return "";
     return `Habitación: ${room}`;
 }
-
+/*	RECALCULAR CAJAS:	*/
+function recalculateTotals() {
+	totalCash = 0;
+	totalCard = 0;
+	totalQR = 0;
+	
+	movements.forEach(m => {
+		if(m.tipo === "ANTICIPO" || m.tipo === "AMBOS") {
+			if(m.method === "EFECTIVO") totalCash += Number(m.cash);
+			if(m.method === "TARJETA") totalCard += Number(m.cash);
+			if(m.method === "QR") totalQR += Number(m.cash);
+			}
+			totalMoney = totalCash + totalCard + totalQR;
+		})
+	}
 /*NUEVO TURNO: */
 function newTurn(){
 	if(confirm("¿INICIAR NUEVO TURNO? - SE BORRARÁN TODOS LOS DATOS. ¿DESEA CONTINUAR?")) {
 		movements = [];
 		notes = [];
+		totalCash = 0;
+		totalCard = 0;
+		totalQR = 0;
 		totalMoney = 0;
 		
 		const date = fechaActual();
@@ -410,12 +469,37 @@ function newTurn(){
 		
 		document.getElementById("turnInfo").textContent = "Turno iniciado: " + date + ' ' + hour;
 		
-		saveData();
+		
 		uiShowMovements();
 		uiShowNotes();
+		recalculateTotals();
 		uiMoney();
+		saveData();
 		}
 	}
+
+/*	===	DARK MODE ===	*/
+
+function toggleDarkMode() {
+	document.body.classList.toggle("dark");
+		//guardar preferencia:
+	if(document.body.classList.contains("dark")) {
+		localStorage.setItem("darkMode", "enabled");
+		} else {
+			localStorage.setItem("darkMode", "disabled");
+			}
+		}
+		
+/*	=== CARGAR PREFERENCIA AL INICIAR ===	*/
+function loadDarkMode() {
+	const darkMode = localStorage.getItem("darkMode");
+	
+	if(darkMode === "enabled") {
+		document.body.classList.add("dark");
+		}
+	}
+
+
 
 
 
@@ -423,3 +507,4 @@ loadData();
 uiShowMovements();
 uiShowNotes();
 uiMoney();
+loadDarkMode();

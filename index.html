@@ -8,12 +8,13 @@
         </head>
 
         <body>
+			<button onclick="toggleDarkMode()" id="darkModeBtn">🌗</button>
             <!-- INICIO DEL BODY -->
             <h1>REGISTRO DE CARGOS Y ANTICIPOS</h1>
             <h2>CONTROL DE CAJA</h2>
             <button id="newTurn" onclick="newTurn()">NUEVO TURNO</button>
             <h3 id="turnInfo"></h3>
-
+			<p>Recepcionista: *Valentín Trevisiol Montiel*</p>
             <!-- MOVIMIENTOS DE CAJA PARA REGISTRO -->
             <div class="section">
                 <h3>REGISTRAR MOVIMIENTOS:</h3>
@@ -26,9 +27,18 @@
 					Info: 
 					<input id="info" placeholder="Info: ">
 					<br>
-					<button onclick="uiPayment()">ANTICIPO</button>
-					<button onclick="uiCharge()">CARGO</button>
-					<button onclick="uiBoth()">AMBOS</button>
+					<h3>Formas de pago: </h3>
+					<select id="paymentMethod">
+						<option value="EFECTIVO">EFECTIVO</option>
+						<option value="TARJETA">TARJETA</option>
+						<option value="QR">CÓDIGO QR</option>
+					</select>				
+					<br>
+					<div class="section">
+						<button onclick="uiPayment()">ANTICIPO</button>
+						<button onclick="uiCharge()">CARGO</button>
+						<button onclick="uiBoth()">AMBOS</button>
+					</div>						
                 </div>
                 <br>
             </div>
@@ -51,7 +61,12 @@
                 <button id="toggleNotesBtn" onclick="toggleNotes()">MOSTRAR</button>
                 <ul id="notes"></ul>
             </div>
-            
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
             <!-- LISTA DE MOVIMIENTOS DE CAJA -->
              <div class="section">
                 <h3>MOVIMIENTOS PENDIENTES:</h3>
@@ -63,12 +78,26 @@
 
                 <br><br>
              </div>
-             
+             <!-- CAJA -->
+             <div class="box-section">
+				 <h2>CAJAS:</h2>
+				 <div class="box-section">
+					 EFECTIVO:
+					 <h1 id="cashTotal">0</h1>
+				 </div>
+				 <div class="box-section">
+					 TARJETAS:
+					 <h1 id="cardTotal">0</h1>
+				 </div>
+				 <div class="box-section">
+					 CÓDIGOS QR:
+					 <h1 id="qrTotal">0</h1>
+				 </div>
+             </div>
              <!-- TOTAL DE CAJA -->
             <div class="section">
                 <h3>TOTAL DE CAJA:</h3>
-                <button onclick="uiMoney()">ACTUALIZAR</button>
-                <h1 id="money">0</h1>
+                <h1 id="moneyTotal">0</h1>
                 <button id="deleteMoney" onclick="uiRestartMoney()">REINICIAR CAJA</button>
             </div>
 

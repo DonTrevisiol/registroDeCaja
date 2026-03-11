@@ -586,6 +586,32 @@ function loadDarkMode() {
 	}
 
 
+/*	SPIDER FUNCTIONS:	*/
+document.addEventListener("click", function(e){
+
+    if(!document.body.classList.contains("spider-mode")) return;
+
+    createWeb(e.clientX, e.clientY);
+
+});
+	
+function createWeb(x,y){
+
+    const web = document.createElement("div");
+
+    web.className = "click-web";
+
+    web.style.left = x + "px";
+    web.style.top = y + "px";
+
+    document.body.appendChild(web);
+
+    setTimeout(()=>{
+        web.remove();
+    },1000);
+
+}
+
 
 
 

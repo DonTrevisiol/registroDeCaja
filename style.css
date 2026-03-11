@@ -80,6 +80,132 @@ body.dark .box-section {
 	background-color: #1a1a1a;
 }
 
+
+/*	====	MODO ARAÑA	====	*/
+
+body.spider-mode{
+	background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("./spidermode/img/spider.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+    font-family: "Bangers", cursive;
+}
+body.spider-mode h1{
+	color:#ff0000;
+	text-shadow: 2px 2px 0 black, 0 0 10px red;
+}
+/* secciones */
+
+body.spider-mode .section{
+    background: rgba(0,0,0,0.75);
+    border: 2px solid red;
+    box-shadow: 0 0 10px red;
+}
+
+/* botones */
+#spiderButton{
+	font-size:18px;
+	background:#cc0000;
+	border:2px solid black;
+}
+body.spider-mode button{
+    background:#b30000;
+    color: white;
+    border: 2px solid black;
+    box-shadow: inset 0 0 8px rgba(255,255,255,0.3), 0 0 6px rgba(0,0,0,0.8);
+    font-weight: bold;
+}
+
+body.spider-mode button:hover{
+    background: #000;
+    color: red;
+}
+
+/* inputs */
+
+body.spider-mode input,
+body.spider-mode select{
+    background: #111;
+    color: white;
+    border: 1px solid red;
+}
+
+body.spider-mode button{
+    background: radial-gradient(circle at center, transparent 30%, rgba(255,255,255,0.15) 31%), radial-gradient(circle at center, transparent 60%, rgba(255,255,255,0.15) 61%);
+    background-color:#b30000;
+    color:white;
+    border:2px solid black;
+}
+/*	CURSORS:	*/
+
+body.spider-mode{
+	cursor: url("./spidermode/cursors/normal.cur"), auto;
+}
+body.spider-mode button:hover{
+	cursor: url("./spidermode/cursors/link.cur"), pointer;
+}
+body.spider-mode input{
+	cursor: url("./spidermode/cursors/texto.cur"), text;
+}
+body.spider-mode select{
+	cursor: url("./spidermode/cursors/method.cur"), auto;
+}
+
+/*SPIDER ANIMATIONS*/
+body.spider-mode .spider-drop{
+    display:block;
+}
+.spider-drop{
+    position:fixed;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    pointer-events:none;
+    display:none;
+}
+.spider-line{
+    width:2px;
+    height:0px;
+    background:white;
+    margin:auto;
+    animation:dropLine 2s forwards;
+}
+.spider{
+
+    font-size:28px;
+
+    text-align:center;
+
+    animation:dropSpider 2s forwards;
+
+}
+@keyframes dropLine{
+
+    from{
+        height:0px;
+    }
+
+    to{
+        height:140px;
+    }
+
+}
+
+
+@keyframes dropSpider{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(140px);
+    }
+
+}
+
 /*	===	RESPONSIVE ===	*/
 @media (max-width: 600px) {
 	input, select, button {

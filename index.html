@@ -6,6 +6,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>REGISTRO CAJA</title>
             <link rel="stylesheet" href="style.css">
+            <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
         </head>
 
         <body>
@@ -30,9 +31,9 @@
 					<br>
 					<h3>Formas de pago: </h3>
 					<select id="paymentMethod">
-						<option value="EFECTIVO">💵 EFECTIVO 💵</option>
-						<option value="TARJETA">💳 TARJETA 💳</option>
-						<option value="QR">📲 CÓDIGO QR 📲</option>
+						<option class="methodPay" value="EFECTIVO">💵 EFECTIVO 💵</option>
+						<option class="methodPay" value="TARJETA">💳 TARJETA 💳</option>
+						<option class="methodPay" value="QR">📲 CÓDIGO QR 📲</option>
 					</select>				
 					<br>
 					<div class="section">
@@ -101,7 +102,12 @@
                 <h1 id="moneyTotal">0</h1>
                 <button id="deleteMoney" onclick="uiRestartMoney()">REINICIAR CAJA</button>
             </div>
-
+			<button onclick="toggleSpiderMode()" id="spiderButton">🕷</button>
+            
+            <div class="spider-drop">
+				<div class="spider-line"></div>
+				<div class="spider">🕷</div>
+			</div>
             <script src="caja.js"></script>
 
         </body>

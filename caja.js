@@ -558,6 +558,24 @@ function toggleDarkMode() {
 			}
 		}
 		
+/*	===	SPIDER MODE	===	*/
+function toggleSpiderMode() {
+
+    document.body.classList.toggle("spider-mode");
+
+    if(document.body.classList.contains("spider-mode")){
+        localStorage.setItem("spiderMode", "on");
+    } else {
+        localStorage.removeItem("spiderMode");
+    }
+}
+
+if(localStorage.getItem("spiderMode") === "on"){
+    document.body.classList.add("spider-mode");
+}
+
+
+		
 /*	=== CARGAR PREFERENCIA AL INICIAR ===	*/
 function loadDarkMode() {
 	const darkMode = localStorage.getItem("darkMode");

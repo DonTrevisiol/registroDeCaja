@@ -12,6 +12,12 @@ let totalCard = 0;
 let totalQR = 0;
 /*totalMoney es una variable que almacena todo el dinero que tengo en caja */
 let totalMoney = 0;
+/*checkins es un arreglo de ingresos de huéspedes*/
+let checkins = [];
+/*checkouts es un arreglo de egresos de huéspedes*/
+let checkouts = [];
+/*reservations es un arreglo de reservaciones*/
+let reservations = [];
 
 /*	========	LOCAL STORAGE ========*/
 /*		GUARDAR:	*/
@@ -22,6 +28,9 @@ function saveData(){
 	localStorage.setItem("caja_totalCard", totalCard);
 	localStorage.setItem("caja_totalQR", totalQR);
 	localStorage.setItem("caja_totalMoney", totalMoney);
+	localStorage.setItem("checkins", JSON.stringify(checkins));
+	localStorage.setItem("checkouts", JSON.stringify(checkouts));
+	localStorage.setItem("reservations", JSON.stringify(reservations));
 	localStorage.setItem("caja_turnInfo", document.getElementById("turnInfo").textContent);
 	}
 	
@@ -29,11 +38,17 @@ function saveData(){
 function loadData(){
 	movements = JSON.parse(localStorage.getItem("caja_movements")) || [];
 	notes = JSON.parse(localStorage.getItem("caja_notes")) || [];
+	checkins = JSON.parse(localStorage.getItem("checkins")) || [];
+	checkouts = JSON.parse(localStorage.getItem("checkouts")) || [];
+	reservations = JSON.parse(localStorage.getItem("reservations")) || [];
 	totalCash = Number(localStorage.getItem("caja_totalCash")) || 0;
 	totalCard = Number(localStorage.getItem("caja_totalCard")) || 0;
 	totalQR = Number(localStorage.getItem("caja_totalQR")) || 0;
 	totalMoney = Number(localStorage.getItem("caja_totalMoney")) || 0;
 	document.getElementById("turnInfo").textContent = localStorage.getItem("caja_turnInfo") || "";
+	renderCheckins();
+	renderCheckouts();
+	renderReservations();
 	}
 
 
@@ -216,7 +231,363 @@ function getNotes() {
     console.table(notes)
     return notes;
 }
+/*
+ * ==========================
+ * FUNCIONES PARA REGISTRO DE HUÉSPEDES
+ * ==========================
+ * */
+ /*INGRESOS:*/
+ function addCheckin(){
 
+    const room = document.getElementById("inRoom").value;
+    const name = document.getElementById("inName").value;
+    const people = document.getElementById("inPeople").value;
+
+    if(!room || !name) return alert("Faltan datos");
+
+    checkins.push({
+        room,
+        name,
+        people,
+        done:false
+    });
+
+    saveData();
+
+    document.getElementById("inRoom").value="";
+    document.getElementById("inName").value="";
+    document.getElementById("inPeople").value="";
+	renderCheckins();
+}
+/*EGRESOS:*/
+function addCheckout(){
+
+    const room = document.getElementById("outRoom").value;
+    const name = document.getElementById("outName").value;
+    const people = document.getElementById("outPeople").value;
+
+    if(!room || !name) return alert("Faltan datos");
+
+    checkouts.push({
+        room,
+        name,
+        people,
+        done:false
+    });
+
+    saveData();
+
+    document.getElementById("outRoom").value="";
+    document.getElementById("outName").value="";
+    document.getElementById("outPeople").value="";
+	renderCheckouts();
+}
+/*RESERVAS:*/
+function addReservation(){
+
+    const room = document.getElementById("resRoom").value;
+    const number = document.getElementById("resNumber").value;
+    const people = document.getElementById("resPeople").value;
+
+    if(!room || !number) return alert("Faltan datos");
+
+    reservations.push({
+        room,
+        number,
+        people,
+        done:false
+    });
+
+    saveData();
+
+    document.getElementById("resRoom").value="";
+    document.getElementById("resNumber").value="";
+    document.getElementById("resPeople").value="";
+	renderReservations();
+}
+//RENDERS:
+function renderCheckins(){
+
+const list = document.getElementById("checkinList");
+
+list.innerHTML = "";
+
+checkins.forEach((c,i)=>{
+
+const li = document.createElement("li");
+
+if(c.done) li.style.textDecoration = "line-through";
+
+li.textContent =
+`Habitación ${c.room} | ${c.name} | Personas: ${c.people}`;
+
+const doneBtn = document.createElement("button");
+doneBtn.textContent = "✔";
+doneBtn.onclick = ()=>toggleCheckin(i);
+
+const editBtn = document.createElement("button");
+editBtn.textContent = "✏";
+editBtn.onclick = ()=>editCheckin(i);
+
+const delBtn = document.createElement("button");
+delBtn.textContent = "🗑";
+delBtn.onclick = ()=>deleteCheckin(i);
+
+li.appendChild(doneBtn);
+li.appendChild(editBtn);
+li.appendChild(delBtn);
+
+list.appendChild(li);
+
+});
+
+}
+
+function renderCheckouts(){
+
+const list = document.getElementById("checkoutList");
+
+list.innerHTML = "";
+
+checkouts.forEach((c,i)=>{
+
+const li = document.createElement("li");
+
+if(c.done) li.style.textDecoration = "line-through";
+
+li.textContent =
+`Habitación ${c.room} | ${c.name} | Personas: ${c.people}`;
+
+const doneBtn = document.createElement("button");
+doneBtn.textContent = "✔";
+doneBtn.onclick = ()=>toggleCheckout(i);
+
+const editBtn = document.createElement("button");
+editBtn.textContent = "✏";
+editBtn.onclick = ()=>editCheckout(i);
+
+const delBtn = document.createElement("button");
+delBtn.textContent = "🗑";
+delBtn.onclick = ()=>deleteCheckout(i);
+
+li.appendChild(doneBtn);
+li.appendChild(editBtn);
+li.appendChild(delBtn);
+
+list.appendChild(li);
+
+});
+
+}
+
+function renderReservations(){
+
+const list = document.getElementById("reservationList");
+
+list.innerHTML = "";
+
+reservations.forEach((r,i)=>{
+
+const li = document.createElement("li");
+
+if(r.done) li.style.textDecoration = "line-through";
+
+li.textContent =
+`Habitación ${r.room} | Reserva #${r.number} | Personas: ${r.people}`;
+
+const doneBtn = document.createElement("button");
+doneBtn.textContent = "✔";
+doneBtn.onclick = ()=>toggleReservation(i);
+
+const editBtn = document.createElement("button");
+editBtn.textContent = "✏";
+editBtn.onclick = ()=>editReservation(i);
+
+const delBtn = document.createElement("button");
+delBtn.textContent = "🗑";
+delBtn.onclick = ()=>deleteReservation(i);
+
+li.appendChild(doneBtn);
+li.appendChild(editBtn);
+li.appendChild(delBtn);
+
+list.appendChild(li);
+
+});
+
+}
+
+/*CRUD:*/
+function toggleCheckin(i){
+
+checkins[i].done = !checkins[i].done;
+
+saveData();
+renderCheckins();
+
+}
+
+
+function deleteCheckin(i){
+
+if(!confirm("¿Eliminar ingreso?")) return;
+
+checkins.splice(i,1);
+
+saveData();
+renderCheckins();
+
+}
+
+
+function editCheckin(i){
+
+const c = checkins[i];
+
+const room = prompt("Habitación:",c.room);
+if(room===null) return;
+
+const name = prompt("Nombre:",c.name);
+if(name===null) return;
+
+const people = prompt("Personas:",c.people);
+
+c.room = room;
+c.name = name;
+c.people = people;
+
+saveData();
+renderCheckins();
+
+}
+
+
+function toggleCheckout(i){
+
+checkouts[i].done = !checkouts[i].done;
+
+saveData();
+renderCheckouts();
+
+}
+
+
+function deleteCheckout(i){
+
+if(!confirm("¿Eliminar egreso?")) return;
+
+checkouts.splice(i,1);
+
+saveData();
+renderCheckouts();
+
+}
+
+
+
+function editCheckout(i){
+
+const c = checkouts[i];
+
+const room = prompt("Habitaciones:",c.room);
+if(room===null) return;
+
+const name = prompt("Nombre:",c.name);
+if(name===null) return;
+
+const people = prompt("Personas:",c.people);
+
+c.room = room;
+c.name = name;
+c.people = people;
+
+saveData();
+renderCheckouts();
+
+}
+
+
+function toggleReservation(i){
+
+reservations[i].done = !reservations[i].done;
+
+saveData();
+renderReservations();
+
+}
+
+
+function deleteReservation(i){
+
+if(!confirm("¿Eliminar reserva?")) return;
+
+reservations.splice(i,1);
+
+saveData();
+renderReservations();
+
+}
+
+
+
+function editReservation(i){
+
+const r = reservations[i];
+
+const room = prompt("Habitación:",r.room);
+if(room===null) return;
+
+const number = prompt("Número reserva:",r.number);
+if(number===null) return;
+
+const people = prompt("Personas:",r.people);
+
+r.room = room;
+r.number = number;
+r.people = people;
+
+saveData();
+renderReservations();
+
+}
+
+
+
+//COPIAR REPORTES:
+function copyShiftReport(){
+
+let text = "INFORME RECEPCIÓN\n\n";
+
+text += "Ingresos:\n";
+
+checkins.forEach((c,i)=>{
+text += `${i+1}) Habitación ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+});
+
+text += "\nEgresos:\n";
+
+checkouts.forEach((c,i)=>{
+text += `${i+1}) Habitaciones: ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+});
+
+text += "\nReservas:\n";
+
+reservations.forEach((r,i)=>{
+text += `${i+1}) Habitación ${r.room} | Reserva #${r.number} | Número de personas: ${r.people}\n`;
+});
+
+navigator.clipboard.writeText(text);
+
+alert("Informe copiado");
+
+}
+
+
+ 
+ 
+ 
+ 
+ 
 /* ===========================
    FUNCIONES PARA INTERFAZ
 =========================== */
@@ -519,7 +890,9 @@ function newTurn(){
 		totalCard = 0;
 		totalQR = 0;
 		totalMoney = 0;
-		
+		checkins = [];
+		checkouts = [];
+		reservations = [];
 		const date = fechaActual();
 		const hour = horaActual();
 		
@@ -620,3 +993,6 @@ uiShowMovements();
 uiShowNotes();
 uiMoney();
 loadDarkMode();
+renderCheckins();
+renderCheckouts();
+renderReservations();

@@ -17,6 +17,7 @@
             <button id="newTurn" onclick="newTurn()">NUEVO TURNO</button>
             <h3 id="turnInfo"></h3>
 			<p>Recepcionista: *Valentín Trevisiol Montiel*</p>
+			<p>Bitácora especial del Hotel</p>
             <!-- MOVIMIENTOS DE CAJA PARA REGISTRO -->
             <div class="section">
                 <h3>REGISTRAR MOVIMIENTOS:</h3>
@@ -44,6 +45,43 @@
                 </div>
                 <br>
             </div>
+            <!-- CHECKS -->
+            <div class="section">
+
+				<h2>📋 Registro de huéspedes</h2>
+				<h3>Ingreso</h3>
+				<input id="inRoom" placeholder="Habitación">
+				<input id="inName" placeholder="Nombre">
+				<input id="inPeople" type="number" placeholder="Personas">
+
+				<button onclick="addCheckin()">Agregar ingreso</button>
+				<h4>Ingresos registrados</h4>
+				<ul id="checkinList"></ul>
+				
+				<h3>Egreso</h3>
+				<input id="outRoom" placeholder="Habitación">
+				<input id="outName" placeholder="Nombre">
+				<input id="outPeople" type="number" placeholder="Personas">
+
+				<button onclick="addCheckout()">Agregar egreso</button>
+				<h4>Egresos registrados</h4>
+				<ul id="checkoutList"></ul>
+				
+				<h3>Reservas</h3>
+
+				<input id="resRoom" placeholder="Habitación">
+				<input id="resNumber" placeholder="Número reserva">
+				<input id="resPeople" type="number" placeholder="Personas">
+
+				<button onclick="addReservation()">Agregar reserva</button>
+				<h4>Reservas registradas</h4>
+				<ul id="reservationList"></ul>
+				
+				<br><br>
+
+				<button onclick="copyShiftReport()">📋 Copiar informe</button>
+
+				</div>
             <!-- NOTAS PARA REGISTRO -->
             <div class="section">
                 <h3>AGREGAR NOTAS:</h3>

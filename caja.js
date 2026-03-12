@@ -35,8 +35,7 @@ function saveData(){
 	localStorage.setItem("reservations", JSON.stringify(reservations));
 	localStorage.setItem("caja_turnInfo", document.getElementById("turnInfo").textContent);
 	localStorage.setItem("shiftNotes", JSON.stringify(shiftNotes));
-	}
-	
+	}	
 /*		CARGAR:		*/
 function loadData(){
 	movements = JSON.parse(localStorage.getItem("caja_movements")) || [];
@@ -55,10 +54,7 @@ function loadData(){
 	renderCheckouts();
 	renderReservations();
 	}
-
-
 /* FUNCTIONS */
-
 /* FUNCTION PAYMENT: */
 // ESTA FUNCIÓN SIRVE PARA REGISTRAR TODO EL DINERO DEJÓ EL HUESPÉD EN CAJA:
 function payment(cash, room=0, info="", method) {
@@ -119,7 +115,6 @@ function charge (cash, room=0, info="", method=null) {
 		}
     
 }
-
 function both (cash, room=0, info="", method) {
 	if (!cash) {
 		alert("EL CAMPO 'MONTO' NO PUEDE ESTAR VACÍO");
@@ -145,10 +140,8 @@ function both (cash, room=0, info="", method) {
 		}
     
 }
-
 /*FUNCTION NOTES: */
 // FUNCION PARA CREAR NOTAS:
-
 function addNote(text, room=0) {
 	if(!text) {
 		alert("EL TEXTO NO PUEDE ESTAR VACÍO")
@@ -165,7 +158,6 @@ function addNote(text, room=0) {
 			}
 			saveData();
 }
-
 function copyNotes() {
     if(notes.length === 0) {
         alert("NO HAY NOTAS PARA COPIAR");
@@ -188,7 +180,6 @@ function copyNotes() {
 
     alert("NOTAS COPIADAS AL PORTAPAPELES");
 }
-
 function copyMovements() {
     if(movements.length === 0) {
         alert("NO HAY MOVIMIENTOS PARA COPIAR");
@@ -220,18 +211,15 @@ function copyMovements() {
 
     alert("MOVIMIENTOS COPIADOS AL PORTAPAPELES");
 }
-
 /* FUNCTION GET: */
 // FUNCIÓN PARA SOLICITAR EL ESTADO
 function getMoney() {
     return totalMoney;
 }
-
 function getMovements() {
     console.table(movements);
     return movements;
 }
-
 function getNotes() {
     console.table(notes)
     return notes;
@@ -350,7 +338,6 @@ list.appendChild(li);
 });
 
 }
-
 function renderCheckouts(){
 
 const list = document.getElementById("checkoutList");
@@ -387,7 +374,6 @@ list.appendChild(li);
 });
 
 }
-
 function renderReservations(){
 
 const list = document.getElementById("reservationList");
@@ -471,7 +457,6 @@ checkins[i].done = !checkins[i].done;
 
 saveData();
 renderCheckins();
-
 }
 function deleteCheckin(i){
 
@@ -481,7 +466,6 @@ checkins.splice(i,1);
 
 saveData();
 renderCheckins();
-
 }
 function editCheckin(i){
 
@@ -501,7 +485,6 @@ c.people = people;
 
 saveData();
 renderCheckins();
-
 }
 function toggleCheckout(i){
 
@@ -509,7 +492,6 @@ checkouts[i].done = !checkouts[i].done;
 
 saveData();
 renderCheckouts();
-
 }
 function deleteCheckout(i){
 
@@ -519,7 +501,6 @@ checkouts.splice(i,1);
 
 saveData();
 renderCheckouts();
-
 }
 function editCheckout(i){
 
@@ -539,7 +520,6 @@ c.people = people;
 
 saveData();
 renderCheckouts();
-
 }
 function toggleReservation(i){
 
@@ -547,7 +527,6 @@ reservations[i].done = !reservations[i].done;
 
 saveData();
 renderReservations();
-
 }
 function deleteReservation(i){
 
@@ -557,7 +536,6 @@ reservations.splice(i,1);
 
 saveData();
 renderReservations();
-
 }
 function editReservation(i){
 
@@ -577,7 +555,6 @@ r.people = people;
 
 saveData();
 renderReservations();
-
 }
 function addShiftNote(){
 
@@ -592,7 +569,6 @@ document.getElementById("shiftNoteText").value="";
 renderShiftNotes();
 
 saveData();
-
 }
 function editShiftNote(index){
 	const newText = prompt("Editar nota: ", shiftNotes[index]);
@@ -603,8 +579,6 @@ function editShiftNote(index){
 	saveData();
 	renderShiftNotes();
 	}
-
-
 //COPIAR REPORTES:
 function copyShiftReport(){
 
@@ -704,19 +678,9 @@ navigator.clipboard.writeText(text);
 alert("Informe copiado");
 
 }
-
-
-
-
- 
- 
- 
- 
- 
 /* ===========================
    FUNCIONES PARA INTERFAZ
 =========================== */
-
 function uiPayment() {
     /*payment(room, cash, info="") */
     payment(
@@ -731,7 +695,6 @@ function uiPayment() {
         uiShowMovements()
         movementsVisible = true;
 }
-
 function uiCharge() {
     /*carge (room, cash, info="") */
     charge(
@@ -759,7 +722,6 @@ function uiBoth() {
         uiShowMovements()
         movementsVisible = true;        
 }
-
 function uiAddNote() {
     /*addNote(text, room=0) */
     addNote(
@@ -771,7 +733,6 @@ function uiAddNote() {
         uiShowNotes();
         notesVisible = true;
 }
-
 function uiMoney() {
 	document.getElementById("cashTotal").textContent = totalCash;
 	document.getElementById("cardTotal").textContent = totalCard;
@@ -779,7 +740,6 @@ function uiMoney() {
 	
     document.getElementById("moneyTotal").textContent = getMoney();
 }
-
 function uiShowNotes() {
     const ul = document.getElementById("notes");
     ul.innerHTML = "";
@@ -813,7 +773,6 @@ function uiShowNotes() {
         ul.appendChild(li);
     });
 }
-
 //  EDITAR NOTA:
 function editNote(index) {
     const newText = prompt("Editar texto:", notes[index].text);
@@ -827,8 +786,6 @@ function editNote(index) {
     saveData();
     uiShowNotes();
 }
-
-
 /* HOUR FUNCTION: */
 function fechaActual() {
     const d = new Date();
@@ -838,7 +795,6 @@ function fechaActual() {
 
     return `${dia}/${mes}/${anio}` ;
 }
-
 function horaActual() {
 	const d = new Date();
 	const hora = String(d.getHours()).padStart(2, "0");
@@ -846,9 +802,7 @@ function horaActual() {
     
     return `${hora}:${min}` ;
 	}
-
 let notesVisible = false;
-
 function toggleNotes() {
     const ul = document.getElementById("notes");
     const btn = document.getElementById("toggleNotesBtn");
@@ -863,14 +817,10 @@ function toggleNotes() {
         notesVisible = false;
     }
 }
-
 /* */
 /* ===== VISIBILIDAD MOVIMIENTOS ===== */
-
 /* ===== MOSTRAR MOVIMIENTOS ===== */
-
 let movementsVisible = false;
-
 function toggleMovements() {
     const ul = document.getElementById("movements");
     const btn = document.getElementById("toggleMovementsBtn");
@@ -915,8 +865,6 @@ function uiShowMovements() {
         ul.appendChild(li);
     });
 }
-
-
 //	EDITAR MOVIMIENTO
 function editMovement(index) {
     const m = movements[index];
@@ -954,14 +902,12 @@ function editMovement(index) {
 	uiMoney();
 	saveData();
 }
-
 /* NUEVA FUNCIÓN */
 function toggleDone(array, index, refresh) {
     array[index].done = ! array[index].done;
     saveData();
 	refresh();
 }
-
 function deleteItem(array, index, refreshFunction) {
     if (confirm("¿ELIMINAR ELEMENTO?")) {
         array.splice(index, 1);
@@ -969,7 +915,6 @@ function deleteItem(array, index, refreshFunction) {
         refreshFunction();
     }
 }
-
 function uiRestartMoney() {
     if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER TODAS LAS CAJAS A 0? LOS MOVIMIENTOS PENDIENTES TAMBIÉN SE PERDERÁN")) {
         document.getElementById("turnInfo").textContent = "";
@@ -986,7 +931,6 @@ function uiRestartMoney() {
     saveData();
     alert("CAJA REINICIADA");
 }
-
 function formatRoom(room) {
     if(!room || room === "0") return "";
     return `Habitación: ${room}`;
@@ -1051,9 +995,7 @@ function deleteAllNotes(){
 	saveData();
 	alert("TODAS LAS NOTAS FUERON ELIMINADAS SATISFACTORIAMENTE");
 }
-
 /*	===	DARK MODE ===	*/
-
 function toggleDarkMode() {
 	document.body.classList.toggle("dark");
 		//guardar preferencia:
@@ -1062,8 +1004,7 @@ function toggleDarkMode() {
 		} else {
 			localStorage.setItem("darkMode", "disabled");
 			}
-		}
-		
+		}	
 /*	===	SPIDER MODE	===	*/
 function toggleSpiderMode() {
 
@@ -1075,13 +1016,9 @@ function toggleSpiderMode() {
         localStorage.removeItem("spiderMode");
     }
 }
-
-if(localStorage.getItem("spiderMode") === "on"){
+	if(localStorage.getItem("spiderMode") === "on"){
     document.body.classList.add("spider-mode");
-}
-
-
-		
+}	
 /*	=== CARGAR PREFERENCIA AL INICIAR ===	*/
 function loadDarkMode() {
 	const darkMode = localStorage.getItem("darkMode");
@@ -1090,8 +1027,6 @@ function loadDarkMode() {
 		document.body.classList.add("dark");
 		}
 	}
-
-
 /*	SPIDER FUNCTIONS:	*/
 document.addEventListener("click", function(e){
 
@@ -1100,7 +1035,6 @@ document.addEventListener("click", function(e){
     createWeb(e.clientX, e.clientY);
 
 });
-	
 function createWeb(x,y){
 
     const web = document.createElement("div");
@@ -1117,10 +1051,6 @@ function createWeb(x,y){
     },1000);
 
 }
-
-
-
-
 loadData();
 uiShowMovements();
 uiShowNotes();

@@ -90,11 +90,18 @@ body.spider-mode{
     background-repeat: no-repeat;
     background-attachment: fixed;
     color: white;
+    text-shadow: 1px 1px 0 black;
     font-family: "Bangers", cursive;
+    font-size:18px;
 }
 body.spider-mode h1{
 	color:#ff0000;
-	text-shadow: 2px 2px 0 black, 0 0 10px red;
+}
+body.spider-mode h1,
+body.spider-mode h2,
+body.spider-mode h3{
+	font-size:1.5em;
+	text-shadow: 2px 2px 0 black, 0 0 8px red;
 }
 /* secciones */
 
@@ -116,6 +123,7 @@ body.spider-mode button{
     border: 2px solid black;
     box-shadow: inset 0 0 8px rgba(255,255,255,0.3), 0 0 6px rgba(0,0,0,0.8);
     font-weight: bold;
+    font-size:16px;
 }
 
 body.spider-mode button:hover{

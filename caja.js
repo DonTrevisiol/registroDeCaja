@@ -974,10 +974,9 @@ function newTurn(){
 		renderCheckins();
 		renderCheckouts();
 		renderReservations();
-<<<<<<< HEAD
-=======
+
 		renderShiftNotes();
->>>>>>> newsUpdates
+		newsUpdates
 		recalculateTotals();
 		uiMoney();
 		saveData();

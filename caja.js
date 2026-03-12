@@ -18,6 +18,8 @@ let checkins = [];
 let checkouts = [];
 /*reservations es un arreglo de reservaciones*/
 let reservations = [];
+/*shiftNotes es un arregloque contiene notas para el siguiente turno de recepcionista*/
+let shiftNotes = [];
 
 /*	========	LOCAL STORAGE ========*/
 /*		GUARDAR:	*/
@@ -32,6 +34,7 @@ function saveData(){
 	localStorage.setItem("checkouts", JSON.stringify(checkouts));
 	localStorage.setItem("reservations", JSON.stringify(reservations));
 	localStorage.setItem("caja_turnInfo", document.getElementById("turnInfo").textContent);
+	localStorage.setItem("shiftNotes", JSON.stringify(shiftNotes));
 	}
 	
 /*		CARGAR:		*/
@@ -41,11 +44,13 @@ function loadData(){
 	checkins = JSON.parse(localStorage.getItem("checkins")) || [];
 	checkouts = JSON.parse(localStorage.getItem("checkouts")) || [];
 	reservations = JSON.parse(localStorage.getItem("reservations")) || [];
+	shiftNotes = JSON.parse(localStorage.getItem("shiftNotes")) || [];
 	totalCash = Number(localStorage.getItem("caja_totalCash")) || 0;
 	totalCard = Number(localStorage.getItem("caja_totalCard")) || 0;
 	totalQR = Number(localStorage.getItem("caja_totalQR")) || 0;
 	totalMoney = Number(localStorage.getItem("caja_totalMoney")) || 0;
 	document.getElementById("turnInfo").textContent = localStorage.getItem("caja_turnInfo") || "";
+	renderShiftNotes();
 	renderCheckins();
 	renderCheckouts();
 	renderReservations();
@@ -285,23 +290,26 @@ function addCheckout(){
 /*RESERVAS:*/
 function addReservation(){
 
-    const room = document.getElementById("resRoom").value;
     const number = document.getElementById("resNumber").value;
+    const name = document.getElementById("reservationName").value;
+    const room = document.getElementById("resRoom").value;
     const people = document.getElementById("resPeople").value;
 
     if(!room || !number) return alert("Faltan datos");
 
     reservations.push({
-        room,
         number,
+        name,
+        room,
         people,
         done:false
     });
 
     saveData();
 
-    document.getElementById("resRoom").value="";
     document.getElementById("resNumber").value="";
+    document.getElementById("reservationName").value="";
+    document.getElementById("resRoom").value="";
     document.getElementById("resPeople").value="";
 	renderReservations();
 }
@@ -393,7 +401,7 @@ const li = document.createElement("li");
 if(r.done) li.style.textDecoration = "line-through";
 
 li.textContent =
-`Habitación ${r.room} | Reserva #${r.number} | Personas: ${r.people}`;
+`Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Personas: ${r.people}`;
 
 const doneBtn = document.createElement("button");
 doneBtn.textContent = "✔";
@@ -416,7 +424,46 @@ list.appendChild(li);
 });
 
 }
+function renderShiftNotes(){
 
+const list = document.getElementById("shiftNoteList");
+
+list.innerHTML="";
+
+shiftNotes.forEach((n,i)=>{
+
+const li = document.createElement("li");
+
+li.textContent = n;
+/*	BOTON EDITAR*/
+const editBtn = document.createElement("button");
+editBtn.textContent = "✏";
+
+editBtn.onclick = ()=>editShiftNote(i);
+/*	BOTON ELIMINAR*/
+const delBtn = document.createElement("button");
+
+delBtn.textContent = "🗑";
+
+delBtn.onclick = ()=>{
+const confirmDelete = confirm("¡¿Eliminar nota?!");
+if(!confirmDelete) return;
+shiftNotes.splice(i,1);
+
+renderShiftNotes();
+
+saveData();
+
+};
+li.appendChild(editBtn);
+
+li.appendChild(delBtn);
+
+list.appendChild(li);
+
+});
+
+}
 /*CRUD:*/
 function toggleCheckin(i){
 
@@ -426,8 +473,6 @@ saveData();
 renderCheckins();
 
 }
-
-
 function deleteCheckin(i){
 
 if(!confirm("¿Eliminar ingreso?")) return;
@@ -438,8 +483,6 @@ saveData();
 renderCheckins();
 
 }
-
-
 function editCheckin(i){
 
 const c = checkins[i];
@@ -460,8 +503,6 @@ saveData();
 renderCheckins();
 
 }
-
-
 function toggleCheckout(i){
 
 checkouts[i].done = !checkouts[i].done;
@@ -470,8 +511,6 @@ saveData();
 renderCheckouts();
 
 }
-
-
 function deleteCheckout(i){
 
 if(!confirm("¿Eliminar egreso?")) return;
@@ -482,9 +521,6 @@ saveData();
 renderCheckouts();
 
 }
-
-
-
 function editCheckout(i){
 
 const c = checkouts[i];
@@ -505,8 +541,6 @@ saveData();
 renderCheckouts();
 
 }
-
-
 function toggleReservation(i){
 
 reservations[i].done = !reservations[i].done;
@@ -515,8 +549,6 @@ saveData();
 renderReservations();
 
 }
-
-
 function deleteReservation(i){
 
 if(!confirm("¿Eliminar reserva?")) return;
@@ -527,9 +559,6 @@ saveData();
 renderReservations();
 
 }
-
-
-
 function editReservation(i){
 
 const r = reservations[i];
@@ -550,7 +579,30 @@ saveData();
 renderReservations();
 
 }
+function addShiftNote(){
 
+const text = document.getElementById("shiftNoteText").value;
+
+if(!text) return;
+
+shiftNotes.push(text);
+
+document.getElementById("shiftNoteText").value="";
+
+renderShiftNotes();
+
+saveData();
+
+}
+function editShiftNote(index){
+	const newText = prompt("Editar nota: ", shiftNotes[index]);
+	if(newText === null) return;
+	
+	shiftNotes[index] = newText;
+	
+	saveData();
+	renderShiftNotes();
+	}
 
 
 //COPIAR REPORTES:
@@ -558,29 +610,102 @@ function copyShiftReport(){
 
 let text = "INFORME RECEPCIÓN\n\n";
 
-text += "Ingresos:\n";
+
+/* INGRESOS */
+
+text += "INGRESOS:\n";
+
+if(checkins.length === 0){
+
+text += "NO HUBO\n";
+
+}else{
 
 checkins.forEach((c,i)=>{
+
 text += `${i+1}) Habitación ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+
 });
 
-text += "\nEgresos:\n";
+text += `TOTAL INGRESOS: ${checkins.length}\n`;
+
+}
+
+text += "\n";
+
+
+/* EGRESOS */
+
+text += "EGRESOS:\n";
+
+if(checkouts.length === 0){
+
+text += "NO HUBO\n";
+
+}else{
 
 checkouts.forEach((c,i)=>{
+
 text += `${i+1}) Habitaciones: ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+
 });
 
-text += "\nReservas:\n";
+text += `TOTAL EGRESOS: ${checkouts.length}\n`;
+
+}
+
+text += "\n";
+
+
+/* RESERVAS */
+
+text += "RESERVAS:\n";
+
+if(reservations.length === 0){
+
+text += "NO HUBO\n";
+
+}else{
 
 reservations.forEach((r,i)=>{
-text += `${i+1}) Habitación ${r.room} | Reserva #${r.number} | Número de personas: ${r.people}\n`;
+
+text += `${i+1}) Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Número de personas: ${r.people}\n`;
+
 });
+
+text += `TOTAL RESERVAS: ${reservations.length}\n`;
+
+}
+
+text += "\n";
+
+
+/* NOTAS DE TURNO */
+
+text += "NOTAS PARA EL SIGUIENTE TURNO:\n";
+
+if(shiftNotes.length === 0){
+
+text += "NINGUNA\n";
+
+}else{
+
+shiftNotes.forEach((n,i)=>{
+
+text += `${i+1}) ${n}\n`;
+
+});
+
+}
+
 
 navigator.clipboard.writeText(text);
 
 alert("Informe copiado");
 
 }
+
+
 
 
  
@@ -893,6 +1018,7 @@ function newTurn(){
 		checkins = [];
 		checkouts = [];
 		reservations = [];
+		shiftNotes = [];
 		const date = fechaActual();
 		const hour = horaActual();
 		
@@ -904,6 +1030,10 @@ function newTurn(){
 		renderCheckins();
 		renderCheckouts();
 		renderReservations();
+<<<<<<< HEAD
+=======
+		renderShiftNotes();
+>>>>>>> newsUpdates
 		recalculateTotals();
 		uiMoney();
 		saveData();

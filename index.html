@@ -68,23 +68,31 @@
 				<ul id="checkoutList"></ul>
 				
 				<h3>Reservas</h3>
-
-				<input id="resRoom" placeholder="Habitación">
 				<input id="resNumber" placeholder="Número reserva">
+				<input id="reservationName" placeholder="A nombre de..."> 
+				<input id="resRoom" placeholder="Habitación">
 				<input id="resPeople" type="number" placeholder="Personas">
 
 				<button onclick="addReservation()">Agregar reserva</button>
 				<h4>Reservas registradas</h4>
 				<ul id="reservationList"></ul>
 				
+				<div class="section">
+					<h3>Notas para el siguiente turno</h3>
+					<input id="shiftNoteText" placeholder="Escribir nota">
+					<button onclick="addShiftNote()">Agregar</button>
+					<ul id="shiftNoteList"></ul>
+				</div>
+				<button onclick="copyShiftReport()">📋 Copiar informe</button>
+				<br><br>
 				<br><br>
 
-				<button onclick="copyShiftReport()">📋 Copiar informe</button>
+				
 
 				</div>
             <!-- NOTAS PARA REGISTRO -->
             <div class="section">
-                <h3>AGREGAR NOTAS:</h3>
+                <h3>AGREGAR BITÁCORA:</h3>
                 
                 Texto:
                 <input id="noteText" name="note" placeholder="Escribe una nota..." required>
@@ -92,12 +100,12 @@
                 Habitación:
                 <input id="noteRoom" type="number" placeholder="###">
 
-                <button onclick="uiAddNote()">AGREGAR NOTA</button>
+                <button onclick="uiAddNote()">AGREGAR BITÁCORA</button>
             </div>
 
             <!-- LISTA DE NOTAS -->
             <div class="section">
-                <h3>LISTA DE NOTAS:</h3>
+                <h3>BITÁCORA ESPECIAL:</h3>
                 <button id="toggleNotesBtn" onclick="toggleNotes()">MOSTRAR</button>
                 <button onclick="copyNotes()">📋 COPIAR</button>
                 <button id="deleteAllNotes" onclick="deleteAllNotes()">🗑 ¿¡ELIMINAR TODAS!? 🗑</button>

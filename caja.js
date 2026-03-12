@@ -901,6 +901,9 @@ function newTurn(){
 		
 		uiShowMovements();
 		uiShowNotes();
+		renderCheckins();
+		renderCheckouts();
+		renderReservations();
 		recalculateTotals();
 		uiMoney();
 		saveData();

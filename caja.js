@@ -592,7 +592,7 @@ text += "NO HUBO\n";
 
 checkins.forEach((c,i)=>{
 
-let line = `${i+1}) Habitación ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+let line = `${i+1}) Habitación ${c.room} | ${c.name} | Número de personas: ${c.people}`;
 
 if(c.done) line = `~${line}~`;
 
@@ -618,7 +618,7 @@ text += "NO HUBO\n";
 }else{
 
 checkouts.forEach((c,i)=>{
-let line = `${i+1}) Habitaciones: ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+let line = `${i+1}) Habitaciones: ${c.room} | ${c.name} | Número de personas: ${c.people}`;
 
 if(c.done) line = `~${line}~`;
 text += line + "\n";
@@ -643,7 +643,7 @@ text += "NO HUBO\n";
 }else{
 
 reservations.forEach((r,i)=>{
-let line = `${i+1}) Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Número de personas: ${r.people}\n`;
+let line = `${i+1}) Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Número de personas: ${r.people}`;
 if (r.done) line = `~${line}~` ;
 
 text += line + "\n";

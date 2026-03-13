@@ -198,10 +198,6 @@ function copyMovements() {
         let line =
             `${m.date} | ${m.tipo} | BS: ${m.cash}${methodText} | ${formatRoom(m.room)} | ${m.info}`;
 
-        if(m.done) {
-            line = `~${line}~`;
-        }
-
         textToCopy += line + "\n";
     });
 
@@ -312,7 +308,7 @@ checkins.forEach((c,i)=>{
 
 const li = document.createElement("li");
 
-if(c.done) li.style.textDecoration = "line-through";
+if(c.done) li.classList.add("done");
 
 li.textContent =
 `Habitación ${c.room} | ${c.name} | Personas: ${c.people}`;
@@ -348,7 +344,7 @@ checkouts.forEach((c,i)=>{
 
 const li = document.createElement("li");
 
-if(c.done) li.style.textDecoration = "line-through";
+if(c.done) li.classList.add("done");
 
 li.textContent =
 `Habitación ${c.room} | ${c.name} | Personas: ${c.people}`;
@@ -383,8 +379,7 @@ list.innerHTML = "";
 reservations.forEach((r,i)=>{
 
 const li = document.createElement("li");
-
-if(r.done) li.style.textDecoration = "line-through";
+if(r.done) li.classList.add("done");
 
 li.textContent =
 `Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Personas: ${r.people}`;
@@ -597,7 +592,11 @@ text += "NO HUBO\n";
 
 checkins.forEach((c,i)=>{
 
-text += `${i+1}) Habitación ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+let line = `${i+1}) Habitación ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+
+if(c.done) line = `~${line}~`;
+
+text += line + "\n";
 
 });
 
@@ -619,8 +618,10 @@ text += "NO HUBO\n";
 }else{
 
 checkouts.forEach((c,i)=>{
+let line = `${i+1}) Habitaciones: ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
 
-text += `${i+1}) Habitaciones: ${c.room} | ${c.name} | Número de personas: ${c.people}\n`;
+if(c.done) line = `~${line}~`;
+text += line + "\n";
 
 });
 
@@ -642,8 +643,10 @@ text += "NO HUBO\n";
 }else{
 
 reservations.forEach((r,i)=>{
+let line = `${i+1}) Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Número de personas: ${r.people}\n`;
+if (r.done) line = `~${line}~` ;
 
-text += `${i+1}) Reserva #${r.number} | ${r.name || "Sin nombre"} | Habitación ${r.room} | Número de personas: ${r.people}\n`;
+text += line + "\n";
 
 });
 

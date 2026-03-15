@@ -180,32 +180,30 @@ function copyNotes() {
 
     alert("NOTAS COPIADAS AL PORTAPAPELES");
 }
-function copyMovements() {
-    if(movements.length === 0) {
-        alert("NO HAY MOVIMIENTOS PARA COPIAR");
-        return;
-    }
+function copyMovements(){
 
-    let textToCopy = "💰 MOVIMIENTOS DE CAJA:\n\n";
+if(movements.length === 0){
 
-    movements.forEach(m => {
+navigator.clipboard.writeText("No hubo movimientos en la caja.");
+alert("Texto copiado");
+return;
 
-        let methodText =
-            (m.tipo === "ANTICIPO" || m.tipo === "AMBOS")
-                ? ` | ${m.method}`
-                : "";
+}
 
-        let line =
-            `${m.date} | ${m.tipo} | BS: ${m.cash}${methodText} | ${formatRoom(m.room)} | ${m.info}`;
+let text = "MOVIMIENTOS PENDIENTES:\n\n";
 
-        textToCopy += line + "\n";
-    });
+movements.forEach((m,i)=>{
 
-    textToCopy += `\n*EFECTIVO:* ${totalCash}BS *TARJETA:* ${totalCard}BS\n *QR:* ${totalQR}BS \n*INGRESOS TOTALES:* ${totalMoney}BS`;
+let line = `${i+1}) ${m.info} | $${m.cash}`;
 
-    navigator.clipboard.writeText(textToCopy);
+text += line + "\n";
 
-    alert("MOVIMIENTOS COPIADOS AL PORTAPAPELES");
+});
+
+navigator.clipboard.writeText(text);
+
+alert("Movimientos copiados");
+
 }
 /* FUNCTION GET: */
 // FUNCIÓN PARA SOLICITAR EL ESTADO
@@ -855,7 +853,7 @@ function uiShowMovements() {
         const delBtn = document.createElement("button");
         delBtn.textContent = "🗑";
         delBtn.onclick = () =>
-            deleteItem(movements, i, uiShowMovements);
+            deleteItem(i);
             
         const editBtn = document.createElement("button");
 		editBtn.textContent = "✏";
@@ -911,13 +909,46 @@ function toggleDone(array, index, refresh) {
     saveData();
 	refresh();
 }
-function deleteItem(array, index, refreshFunction) {
-    if (confirm("¿ELIMINAR ELEMENTO?")) {
-        array.splice(index, 1);
-        saveData();
-        refreshFunction();
-    }
+
+function deleteItem(index){
+
+if(!confirm("¿Eliminar movimiento?")) return;
+
+const m = movements[index];
+const amount = Number(m.cash || 0);
+
+/* Solo restar si el movimiento tiene método de pago */
+
+if(m.method){
+
+totalMoney -= amount;
+
+if(m.method === "Efectivo"){
+cashTotal -= amount;
 }
+
+if(m.method === "Tarjeta"){
+cardTotal -= amount;
+}
+
+if(m.method === "QR"){
+qrTotal -= amount;
+}
+
+}
+
+/* eliminar movimiento */
+
+movements.splice(index,1);
+
+saveData();
+recalculateTotals();
+uiShowMovements();
+uiMoney();
+
+}
+
+
 function uiRestartMoney() {
     if(confirm("¿ESTÁ SEGURO QUE DESEA VOLVER TODAS LAS CAJAS A 0? LOS MOVIMIENTOS PENDIENTES TAMBIÉN SE PERDERÁN")) {
         document.getElementById("turnInfo").textContent = "";

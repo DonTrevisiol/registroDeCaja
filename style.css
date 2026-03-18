@@ -10,6 +10,14 @@ h1, h2 {
 input, button {
     margin: 5px;
 }
+button {
+	transition: all 0.2s ease;
+}
+button:hover{
+	cursor: pointer;
+	filter: brightness(1.1);
+	transform: scale(1.05);
+}
 .section {
     border: 1px solid #ccc;
     padding: 10px;
@@ -74,6 +82,11 @@ body.dark button {
 	background-color: #1e1e1e;
 	color: white;
 	border: 1px solid #444;
+}
+body.dark button:hover{
+	background-color: #333;
+	color: #fff;
+	border-color: #888;
 }
 body.dark .section,
 body.dark .box-section {

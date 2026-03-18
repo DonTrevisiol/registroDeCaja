@@ -5,8 +5,10 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>REGISTRO CAJA</title>
+            <link rel="icon" href="favicon.ico" type="image/x-icon">
             <link rel="stylesheet" href="style.css">
             <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+            <script type="module" src="/js/main.js"></script>
         </head>
 
         <body>
@@ -46,6 +48,32 @@
                 </div>
                 <br>
             </div>
+            <!-- LISTA DE MOVIMIENTOS DE CAJA -->
+             <div class="section">
+                <h3>MOVIMIENTOS PENDIENTES:</h3>
+                <button id="toggleMovementsBtn" onclick="toggleMovements()">MOSTRAR</button>
+                <button onclick="copyMovements()">📋 COPIAR</button>
+                <ul id="movements"></ul>
+
+                <br><br>
+             </div>
+             <!-- CAJA -->
+             <div class="box-section">
+				 <h2>CAJAS:</h2>
+				 <div class="box-section">
+					 <h1> 💵: </h1>
+					 <h1 id="cashTotal">0</h1>
+				 </div>
+				 <div class="box-section">
+					 <h1> 💳: </h1>
+					 <h1 id="cardTotal">0</h1>
+				 </div>
+				 <div class="box-section">
+					 <h1> 📲: </h1>
+					 <h1 id="qrTotal">0</h1>
+				 </div>
+             </div>
+            
             <!-- CHECKS -->
             <div class="section">
 
@@ -88,8 +116,6 @@
 				<br><br>
 				<br><br>
 
-				
-
 				</div>
             <!-- NOTAS PARA REGISTRO -->
             <div class="section">
@@ -118,31 +144,6 @@
             <br>
             <br>
             <br>
-            <!-- LISTA DE MOVIMIENTOS DE CAJA -->
-             <div class="section">
-                <h3>MOVIMIENTOS PENDIENTES:</h3>
-                <button id="toggleMovementsBtn" onclick="toggleMovements()">MOSTRAR</button>
-                <button onclick="copyMovements()">📋 COPIAR</button>
-                <ul id="movements"></ul>
-
-                <br><br>
-             </div>
-             <!-- CAJA -->
-             <div class="box-section">
-				 <h2>CAJAS:</h2>
-				 <div class="box-section">
-					 <h1> 💵: </h1>
-					 <h1 id="cashTotal">0</h1>
-				 </div>
-				 <div class="box-section">
-					 <h1> 💳: </h1>
-					 <h1 id="cardTotal">0</h1>
-				 </div>
-				 <div class="box-section">
-					 <h1> 📲: </h1>
-					 <h1 id="qrTotal">0</h1>
-				 </div>
-             </div>
              <!-- TOTAL DE CAJA -->
             <div class="section">
                 <h3>TOTAL DE CAJA:</h3>
@@ -155,7 +156,5 @@
 				<div class="spider-line"></div>
 				<div class="spider">🕷</div>
 			</div>
-            <script src="caja.js"></script>
-
         </body>
     </html>

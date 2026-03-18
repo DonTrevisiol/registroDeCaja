@@ -171,7 +171,7 @@ function editMovement(index) {
 function copyMovements() {
 
     if (movements.length === 0) {
-        navigator.clipboard.writeText("No hubo movimientos");
+        navigator.clipboard.writeText("No hubo movimientos.\n EFECTIVO: *0BS* \n TARJETA: *0BS* \n CÓDIGO QR: *0BS* \n\n TOTAL: *0BS*");
         alert("Copiado: No hubo movimientos");
         return;
     }

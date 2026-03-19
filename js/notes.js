@@ -36,7 +36,7 @@ function copyNotes() {
         let line = `${n.date} | ${n.text} | ${formatRoom(n.room)}`;
 
         if(n.done) {
-            line = `~${line}~`;
+            line = `~${line.trim()}~`;
         }
 
         textToCopy += line + "\n";

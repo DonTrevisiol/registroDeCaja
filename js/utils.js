@@ -10,7 +10,7 @@ function toggleDone(list, index, render){
 	
 function formatRoom(room) {
     if(!room || room === "0") return "";
-    return `Habitación: ${room}`;
+    return `Habitación: *${room}*`;
 }
 
 /* HOUR FUNCTION: */

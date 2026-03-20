@@ -14,7 +14,7 @@
         <body>
 			<button onclick="toggleDarkMode()" id="darkModeBtn">🌗</button>
             <!-- INICIO DEL BODY -->
-            <header><p>Version: 1.0</p></header>
+            <header><p>VersiÓn: 2.0</p></header>
             <h1>REGISTRO DE CAJAS Y DE HUÉSPEDES</h1>
             <h2>CONTROL DE CAJA</h2>
             <button id="newTurn" onclick="newTurn()">NUEVO TURNO</button>
@@ -52,7 +52,7 @@
              <div class="section">
                 <h3>MOVIMIENTOS PENDIENTES:</h3>
                 <button id="toggleMovementsBtn" onclick="toggleMovements()">MOSTRAR</button>
-                <button onclick="copyMovements()">📋 COPIAR</button>
+                <button onclick="copyMovements()">📋 COPIAR 📋</button>
                 <ul id="movements"></ul>
 
                 <br><br>
@@ -77,33 +77,35 @@
             <!-- CHECKS -->
             <div class="section">
 
-				<h2>📋 Registro de huéspedes</h2>
-				<h3>Ingreso</h3>
-				<input id="inRoom" placeholder="Habitación">
+				<h2>📋 Registro de huéspedes 📋</h2>
+				<h3>Ingresos:</h3>
+				<input id="inRoom" placeholder="Habitación checkin">
 				<input id="inName" placeholder="Nombre">
 				<input id="inPeople" type="number" placeholder="Personas">
 
 				<button onclick="addCheckin()">Agregar ingreso</button>
-				<h4>Ingresos registrados</h4>
+				<h4>Checkin registrados:</h4>
 				<ul id="checkinList"></ul>
-				
-				<h3>Egreso</h3>
-				<input id="outRoom" placeholder="Habitación">
+				<br>
+				<hr>
+				<h3>Egresos:</h3>
+				<input id="outRoom" placeholder="Habitación checkout">
 				<input id="outName" placeholder="Nombre">
 				<input id="outPeople" type="number" placeholder="Personas">
 
 				<button onclick="addCheckout()">Agregar egreso</button>
-				<h4>Egresos registrados</h4>
+				<h4>Checkout registrados:</h4>
 				<ul id="checkoutList"></ul>
-				
-				<h3>Reservas</h3>
+				<br>
+				<hr>
+				<h3>Reservas:</h3>
 				<input id="resNumber" placeholder="Número reserva">
 				<input id="reservationName" placeholder="A nombre de..."> 
 				<input id="resRoom" placeholder="Habitación">
 				<input id="resPeople" type="number" placeholder="Personas">
 
 				<button onclick="addReservation()">Agregar reserva</button>
-				<h4>Reservas registradas</h4>
+				<h4>Reservas registradas:</h4>
 				<ul id="reservationList"></ul>
 				
 				<div class="section">
@@ -112,7 +114,7 @@
 					<button onclick="addShiftNote()">Agregar</button>
 					<ul id="shiftNoteList"></ul>
 				</div>
-				<button onclick="copyShiftReport()">📋 Copiar informe</button>
+				<button onclick="copyShiftReport()">📋 Copiar informe 📋</button>
 				<br><br>
 				<br><br>
 
@@ -134,7 +136,7 @@
             <div class="section">
                 <h3>BITÁCORA ESPECIAL:</h3>
                 <button id="toggleNotesBtn" onclick="toggleNotes()">MOSTRAR</button>
-                <button onclick="copyNotes()">📋 COPIAR</button>
+                <button onclick="copyNotes()">📋 COPIAR 📋</button>
                 <button id="deleteAllNotes" onclick="deleteAllNotes()">🗑 ¿¡ELIMINAR TODAS!? 🗑</button>
                 <ul id="notes"></ul>
             </div>

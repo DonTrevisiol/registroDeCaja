@@ -1,8 +1,8 @@
 /* ./js/ui.js */
 import { MOVEMENT_TYPES } from "./constants.js";
 import { payment, charge, both, deleteItem, editMovement, resetMovements, movements, totalCash, totalCard, totalQR, totalMoney } from "./movements.js";
-import { addNote, editNote, notes } from "./notes.js";
-import { movementsVisible } from "./uiVisibility.js";
+import { addNote, editNote, deleteNote, notes } from "./notes.js";
+import { movementsVisible, notesVisible, toggleMovements, toggleNotes } from "./uiVisibility.js";
 import { formatRoom, toggleDone } from "./utils.js";
 import { saveData } from "./storage.js";
 /* ===========================
@@ -19,7 +19,11 @@ function uiPayment() {
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("info").value = "";
-        uiShowMovements()
+        if (!movementsVisible) {
+			toggleMovements();
+		} else {
+			uiShowMovements();
+		}
 }
 function uiCharge() {
     /*carge (room, cash, info="") */
@@ -31,7 +35,11 @@ function uiCharge() {
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("info").value = "";
-        uiShowMovements()     
+        if (!movementsVisible) {
+			toggleMovements();
+		} else {
+			uiShowMovements();
+		}
 }
 function uiBoth() {
     /*function both (cash, room, info="") */
@@ -44,10 +52,15 @@ function uiBoth() {
         document.getElementById("room").value = "";
         document.getElementById("cash").value = "";
         document.getElementById("info").value = "";
-        uiShowMovements()
+        if (!movementsVisible) {
+			toggleMovements();
+		} else {
+			uiShowMovements();
+		}
 }
 
 function uiShowMovements() {
+	if (!movementsVisible) return;
     const ul = document.getElementById("movements");
     ul.innerHTML = "";
 
@@ -72,7 +85,9 @@ function uiShowMovements() {
 
         const text = document.createElement("span");
         const methodText = (m.tipo === MOVEMENT_TYPES.ANTICIPO || m.tipo === MOVEMENT_TYPES.AMBOS) ? ` | ${m.method}` : "";
-  text.textContent = `${m.date} | ${m.tipo} | $${m.cash} ${methodText} | ${formatRoom(m.room)} | ${m.info}`;
+        let roomText = m.room ? ` | Hab ${m.room}` : "";
+        let infoText = m.info ? ` | ${m.info}` : "";
+		text.textContent = `${m.date} | ${m.tipo} | ${m.cash} BS. ${methodText}${roomText}${infoText}`;
         li.append(doneBtn, delBtn, editBtn, text);
         ul.appendChild(li);
     });
@@ -90,6 +105,7 @@ function uiAddNote() {
 }
 
 function uiShowNotes() {
+	if (!notesVisible) return;
     const ul = document.getElementById("notes");
     ul.innerHTML = "";
 
@@ -115,8 +131,9 @@ function uiShowNotes() {
 
 
         const text = document.createElement("span");
+        let roomText = formatRoom(n.room);
         text.textContent =
-            ` ${n.date} | ${n.text} | ${formatRoom(n.room)} `;
+            ` ${n.date} | ${n.text}${roomText ? " | " + roomText : ""}`;
 
         li.append(doneBtn, delBtn, editBtn, text);
         ul.appendChild(li);

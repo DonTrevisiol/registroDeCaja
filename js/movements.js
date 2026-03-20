@@ -176,7 +176,7 @@ function copyMovements() {
         return;
     }
 
-    let text = "";
+    let text = "MOVIMIENTOS DE CAJA: \n";
 
     let totalEfectivo = 0;
     let totalTarjeta = 0;
@@ -191,7 +191,9 @@ function copyMovements() {
         let methodText = m.method ? ` | ${m.method}` : "";
 
         // Línea completa
-        text += `${tipo} | $${m.cash}${methodText} | Hab ${m.room || "-" } | ${m.info}\n`;
+        let roomText = m.room ? ` | Hab ${m.room}` : "";
+        let infoText = m.info ? ` | ${m.info}` : "";
+        text += `${tipo} | *${m.cash} BS.* ${methodText}${roomText}${infoText}\n`;
 
         // SOLO sumamos si tiene método (o sea, no es CARGO)
         if (m.method) {

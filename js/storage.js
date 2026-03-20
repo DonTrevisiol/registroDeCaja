@@ -1,9 +1,10 @@
 /* ./js/storage.js */
 import { STORAGE_KEYS } from "./constants.js";
-import { movements, totalCash, totalCard, totalQR, totalMoney } from "./movements.js";
+import { movements, totalCash, totalCard, totalQR, totalMoney, recalculateTotals } from "./movements.js";
 import { notes } from "./notes.js";
 import { checkins, checkouts, reservations, renderCheckins, renderCheckouts, renderReservations } from "./guests.js";
 import { shiftNotes, renderShiftNotes } from "./shiftNotes.js";
+import { uiMoney } from "./ui.js";
 
 function saveData(){
 
@@ -14,10 +15,6 @@ checkins,
 checkouts,
 reservations,
 shiftNotes,
-totalCash,
-totalCard,
-totalQR,
-totalMoney,
 turnInfo: document.getElementById("turnInfo").textContent
 };
 
@@ -54,6 +51,9 @@ shiftNotes.push(...(data.shiftNotes || []));
 
 document.getElementById("turnInfo").textContent = data.turnInfo || "";
 
+recalculateTotals();
+uiMoney();
+// RENDERS:
 renderShiftNotes();
 renderCheckins();
 renderCheckouts();

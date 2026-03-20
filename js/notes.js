@@ -3,10 +3,12 @@
 import { horaActual, formatRoom } from "./utils.js";
 import { saveData } from "./storage.js"
 import { uiShowNotes } from "./ui.js"
+import { notesVisible, toggleNotes } from "./uiVisibility.js"
+/* VARIABLES */
 /*notes es un arreglo que sirve para informar noticias que no tengan que ver con los mivimientos de caja */
 let notes = [];
 
-
+// FUNCIONES:
 // FUNCION PARA CREAR NOTAS:
 function addNote(text, room=0) {
  if(!text) {
@@ -20,20 +22,26 @@ function addNote(text, room=0) {
     });
    
    alert("NOTA AGREGADA SATISFACTORIAMENTE: ", room)
-   document.getElementById("toggleNotesBtn").textContent = "OCULTAR";
+   if (!notesVisible) {
+	 toggleNotes();  
+	 } else {
+		uiShowNotes(); 
+		}
    }
    saveData();
 }
+// FUNCIÓN PARA COPIAR NOTAS:
 function copyNotes() {
     if(notes.length === 0) {
         alert("NO HAY NOTAS PARA COPIAR");
         return;
     }
 
-    let textToCopy = "📝 BITÁCORA ESPECIAL:\n\n";
+    let textToCopy = "📝 BITÁCORA ESPECIAL: 📝\n\n";
 
     notes.forEach(n => {
-        let line = `${n.date} | ${n.text} | ${formatRoom(n.room)}`;
+		let roomText = formatRoom(n.room)
+        let line = `${n.date} | ${n.text}${roomText ? " | " + roomText : ""}`;
 
         if(n.done) {
             line = `~${line.trim()}~`;
@@ -46,7 +54,7 @@ function copyNotes() {
 
     alert("NOTAS COPIADAS AL PORTAPAPELES");
 }
-// EDITAR NOTA:
+// FUNCION PARA EDITAR NOTA:
 function editNote(index) {
     const newText = prompt("Editar texto:", notes[index].text);
     if (newText === null) return;
@@ -59,22 +67,16 @@ function editNote(index) {
     saveData();
     uiShowNotes();
 }
-let notesVisible = false;
-function toggleNotes() {
-    const ul = document.getElementById("notes");
-    const btn = document.getElementById("toggleNotesBtn");
-
-    if (!notesVisible) {
-        uiShowNotes();
-        btn.textContent = "OCULTAR";
-        notesVisible = true;
-    } else {
-        ul.innerHTML = "";
-        btn.textContent = "MOSTRAR";
-        notesVisible = false;
-    }
+//FUNCION PARA ELIMINAR UNA NOTA:
+function deleteNote(index) {
+	if(!confirm("¡¿ELIMINAR NOTA?!"))
+	return;
+	notes.splice(index, 1);
+	
+	saveData();
+	uiShowNotes();
 }
-
+//FUNCION PARA ELIMINAR TODAS LAS NOTAS:
 function deleteAllNotes(){
  if(notes.length === 0){
   alert("NO HAY NOTAS PARA ELIMINAR");
@@ -92,6 +94,7 @@ export {
     notes,
     addNote,
     editNote,
+    deleteNote,
     deleteAllNotes,
     copyNotes,
     toggleNotes
